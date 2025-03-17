@@ -2,12 +2,6 @@
 
 #include <thread>
 
-//#define DEBUG
-
-#ifdef DEBUG
-#include <iostream>
-#endif
-
 using namespace andromeda::app;
 using namespace std::chrono;
 

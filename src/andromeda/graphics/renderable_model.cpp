@@ -3,10 +3,10 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 
-#include <andromeda/util/debug.h>
 #include <andromeda/util/array_list.h>
 #include <andromeda/util/string_utils.h>
 #include <andromeda/io/files.h>
+#include <andromeda/util/log.h>
 
 using namespace andromeda::graphics;
 using namespace andromeda::util;

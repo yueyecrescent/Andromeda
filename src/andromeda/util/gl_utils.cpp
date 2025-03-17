@@ -1,7 +1,7 @@
 #include <andromeda/util/gl_utils.h>
 
-#include <andromeda/util/debug.h>
 #include <string.h>
+#include "../../../include/andromeda/util/log.h"
 
 using namespace andromeda::util;
 

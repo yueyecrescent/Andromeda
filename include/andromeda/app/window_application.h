@@ -1,13 +1,13 @@
 #ifndef ANDROMEDA_APP_WINDOWAPPLICATION
 #define ANDROMEDA_APP_WINDOWAPPLICATION
 
-#include "../util/debug.h"
 #include <opengl/glad/glad.h>
 #include <opengl/GLFW/glfw3.h>
 #include "window.h"
 #include "frame_rate.h"
 #include "../media/color_rgba.h"
 #include "../graphics/framebuffer.h"
+#include "../util/log.h"
 #include "application.h"
 #include "render_sys.h"
 

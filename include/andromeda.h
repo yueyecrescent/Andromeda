@@ -1,12 +1,15 @@
 #ifndef ANDROMEDA
 #define ANDROMEDA
 
-#include "macros.h"
-#include "image.h"
-#include "util.h"
+#include "app.h"
 #include "audio.h"
+#include "graphics.h"
+#include "io.h"
+#include "math.h"
 #include "media.h"
-#include "font.h"
+#include "thread.h"
+#include "traits.h"
+#include "util.h"
 
 namespace andromeda {
 	extern bool use_opengl;

@@ -1,5 +1,6 @@
 #include <andromeda/app/window.h>
-#include <andromeda/util/debug.h>
+
+#include <andromeda/util/log.h>
 
 using namespace andromeda::app;
 using namespace andromeda::media;

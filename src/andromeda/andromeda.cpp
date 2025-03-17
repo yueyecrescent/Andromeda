@@ -1,8 +1,8 @@
-#include <andromeda/util/debug.h>
 #include <opengl/glad/glad.h>
 #include <opengl/GLFW/glfw3.h>
 #include <openal/alc.h>
 #include <openal/al.h>
+#include "../../include/andromeda/util/log.h"
 
 namespace andromeda {
 	bool use_opengl=true;

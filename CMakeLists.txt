@@ -21,7 +21,6 @@ endif()
 project(andromeda)
 
 set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11 -Wno-attributes -Wno-deprecated-declarations -Wno-pointer-arith -Wno-stringop-overflow" )
-set(CMAKE_BUILD_TYPE Release)
 set(EXECUTABLE_OUTPUT_PATH "${PROJECT_BINARY_DIR}/bin")
 set(LIBRARY_OUTPUT_PATH "${PROJECT_BINARY_DIR}/lib")
 
@@ -31,7 +30,6 @@ file(GLOB SOURCES
 	"src/andromeda/audio/*.cpp"
 	"src/andromeda/font/*.cpp"
 	"src/andromeda/graphics/*.cpp"
-	"src/andromeda/image/*.cpp"
 	"src/andromeda/io/*.cpp"
 	"src/andromeda/media/*.cpp"
 	"src/andromeda/thread/*.cpp"

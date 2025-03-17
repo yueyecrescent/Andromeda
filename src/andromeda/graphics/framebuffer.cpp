@@ -1,8 +1,8 @@
 #include <andromeda/graphics/framebuffer.h>
 
-#include <andromeda/util/debug.h>
 #include <andromeda/graphics/shader_program.h>
 #include <andromeda/graphics/vertex_attribute.h>
+#include <andromeda/util/log.h>
 
 using namespace andromeda::graphics;
 

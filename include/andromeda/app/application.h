@@ -1,12 +1,15 @@
 #ifndef ANDROMEDA_APP_APPLICATION
 #define ANDROMEDA_APP_APPLICATION
 
-#include "../util/debug.h"
+#include <atomic>
+
 #include "../thread/coroutine_lock.h"
 #include "../thread/thread.h"
 #include "frame_rate.h"
 #include "../traits/Types.h"
+#include "../util/log.h"
 
+// @formatter:off
 /**
  * 抽象的应用类，只包含更新逻辑，无图形渲染、音频等，可用于编写服务端
  */
@@ -60,7 +63,7 @@ namespace andromeda {
 			DefineApplicationBase(Application)
 		protected:
 			bool is_running=false;
-			std::atomic_bool synchronize_fps; //主线程(如果是窗口程序则是渲染线程)是否与该线程同步
+			std::atomic<bool> synchronize_fps; //主线程(如果是窗口程序则是渲染线程)是否与该线程同步
 			MainLoopThread<Derived>* main_loop_thread=nullptr;
 
 			using andromeda::thread::CoroutineLock::turn;
@@ -212,4 +215,4 @@ namespace andromeda {
 	}
 }
 
-#endif//ANDROMEDA_APP_APPLICATION
+#endif//ANDROMEDA_APP_APPLICATION// @formatter:on

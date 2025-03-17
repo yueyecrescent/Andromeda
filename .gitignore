@@ -1,1 +1,6 @@
+/.settings/
+/.cproject
+/.project
 /build/
+/Debug/
+/Release/
