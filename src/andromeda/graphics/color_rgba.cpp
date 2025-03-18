@@ -1,20 +1,8 @@
-#include <andromeda/media/color_rgba.h>
+#include <andromeda/graphics/color_rgba.h>
 
-#include <andromeda/media/color_rgba.h>
-#include <andromeda/media/pixel.h>
 #include <andromeda/media/raster_image.h>
 
-using namespace andromeda::media;
-
-ColorRGBA::ColorRGBA(int i_r,int i_g,int i_b,int i_a) :
-		r(getChannelInt(i_r)), g(getChannelInt(i_g)), b(getChannelInt(i_b)), a(getChannelInt(i_a))
-{
-}
-
-ColorRGBA::ColorRGBA(float f_r,float f_g,float f_b,float f_a) :
-		r(getChannelFloat(f_r)), g(getChannelFloat(f_g)), b(getChannelFloat(f_b)), a(getChannelFloat(f_a))
-{
-}
+using namespace andromeda::graphics;
 
 ColorRGBA::ColorRGBA(const Pixel pixel) :
 		r(getChannelInt(pixel.r)), g(getChannelInt(pixel.g)), b(getChannelInt(pixel.b)), a(getChannelInt(pixel.a))
@@ -99,4 +87,18 @@ ColorRGBA ColorRGBAVector::toColorRGBA()
 inline Pixel ColorRGBAVector::toPixel()
 {
 	return Pixel(ColorRGBA(getChannelRByRadianVector(rdefg,gdefb,length),getChannelGByRadianVector(rdefg,gdefb,length),getChannelBByRadianVector(rdefg,gdefb,length),alpha));
+}
+
+//Pixel
+Pixel& Pixel::setRGBA(int _r,int _g,int _b,int _a) //设置-1表示不变，0-255则改变为设置的值，超出这个范围的就取0或255
+{
+	if(_r!=-1)
+		r=getPixelInt(_r);
+	if(_g!=-1)
+		g=getPixelInt(_g);
+	if(_b!=-1)
+		b=getPixelInt(_b);
+	if(_a!=-1)
+		a=getPixelInt(_a);
+	return *this;
 }

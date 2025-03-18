@@ -5,7 +5,6 @@
 #include <malloc.h>
 #include <string.h>
 #include <math.h>
-#include "color_math.h"
 #include "pcm_audio.h"
 #include "../util/string_utils.h"
 

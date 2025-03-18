@@ -2,7 +2,7 @@
 #define ANDROMEDA_GRAPHICS_FRAMEBUFFER
 
 #include <opengl/glad/glad.h>
-#include "../media/color_rgba.h"
+#include "../graphics/color_rgba.h"
 #include "shader_program.h"
 
 //BUFFER_SIZE宏用于得到分配内存使用的实际尺寸，在Mac OS上尺寸要乘以2
@@ -22,7 +22,7 @@ namespace andromeda {
 			GLuint depth_stencil_buffer;
 			int width,height;
 			bool allocated=false;
-			andromeda::media::ColorRGBA clear_color;
+			andromeda::graphics::ColorRGBA clear_color;
 			GLuint frame_vao; //OpenGL的VAO对象，储存了顶点属性、VBO、EBO数据缓冲id
 			GLuint frame_vbo; //用于渲染到屏幕使用
 			GLuint frame_ebo;
@@ -39,18 +39,18 @@ namespace andromeda {
 
 			Framebuffer()=default; //构造函数不会实际初始化和分配缓冲id，这将在alloc()中执行
 			//构造函数疑难：下面的构造函数在头文件中定义可以正常工作，但在.cpp文件中定义则会访问空指针异常
-			Framebuffer(int width,int height,andromeda::media::ColorRGBA clearColor={0,0,0,0}) :
+			Framebuffer(int width,int height,andromeda::graphics::ColorRGBA clearColor={0,0,0,0}) :
 					width(width), height(height)
 			{
 				setClearColor(clearColor);
 			}
 
-			inline void setClearColor(andromeda::media::ColorRGBA clearColor={0,0,0,0})
+			inline void setClearColor(andromeda::graphics::ColorRGBA clearColor={0,0,0,0})
 			{
 				this->clear_color=clearColor;
 			}
 
-			inline andromeda::media::ColorRGBA getClearColor()
+			inline andromeda::graphics::ColorRGBA getClearColor()
 			{
 				return clear_color;
 			}

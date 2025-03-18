@@ -1,5 +1,7 @@
 #include <andromeda/media/sound_generator.h>
 
+#include <andromeda/math/operations.h>
+
 using namespace andromeda::media;
 
 double procfunc::pass(double v)

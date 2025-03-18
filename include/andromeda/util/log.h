@@ -6,8 +6,8 @@
 #include <iostream>
 #include "../util/string_utils.h"
 #define LOG_COUT(...) {std::cout<<(andromeda::util::str_join(__VA_ARGS__))<<std::endl;}
-#else()
-#define LOG_COUT(...)
+#else
+#define LOG_COUT(...) ;
 #endif
 
 #endif //ANDROMEDA_UTIL_DEBUG

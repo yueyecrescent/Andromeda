@@ -2,8 +2,6 @@
 #define ANDROMEDA_MEDIA
 
 //图像处理
-#include "media/color_rgba.h"
-#include "media/pixel.h"
 #include "media/raster_image.h"
 //音频处理
 #include "media/pcm_audio.h"

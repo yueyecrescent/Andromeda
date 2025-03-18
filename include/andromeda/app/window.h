@@ -3,7 +3,7 @@
 
 #include <opengl/glad/glad.h>
 #include <opengl/GLFW/glfw3.h>
-#include "../media/color_rgba.h"
+#include "../graphics/color_rgba.h"
 
 namespace andromeda {
 	namespace app {
@@ -15,34 +15,34 @@ namespace andromeda {
 			int width,height;
 			bool is_fullScreen;
 			const char* title;
-			andromeda::media::ColorRGBA back_color;
+			andromeda::graphics::ColorRGBA back_color;
 
 		public:
 			Window()=default; //该构造函数不会实际初始化窗口仅分配内存，需要重新调用其他构造函数以正常工作
-			Window(const char *title,int width=800,int height=600,andromeda::media::ColorRGBA backColor_={0,0,0,0},bool isfullscreen=false,GLFWmonitor *monitor_=glfwGetPrimaryMonitor());
+			Window(const char *title,int width=800,int height=600,andromeda::graphics::ColorRGBA backColor_={0,0,0,0},bool isfullscreen=false,GLFWmonitor *monitor_=glfwGetPrimaryMonitor());
 
 			inline operator GLFWwindow*()
 			{
 				return window_id;
 			}
 
-			inline void setBackColor(andromeda::media::ColorRGBA backColor_={0,0,0,0})
+			inline void setBackColor(andromeda::graphics::ColorRGBA backColor_={0,0,0,0})
 			{
 				back_color=backColor_;
 			}
 
-			inline andromeda::media::ColorRGBA getBackColor()
+			inline andromeda::graphics::ColorRGBA getBackColor()
 			{
 				return back_color;
 			}
 
-			inline Window& setBackColor(andromeda::media::ColorChannel ch,float v)
+			inline Window& setBackColor(andromeda::graphics::ColorChannel ch,float v)
 			{
 				back_color.setRGBA(ch,v);
 				return *this;
 			}
 
-			inline float getBackColor(andromeda::media::ColorChannel ch)
+			inline float getBackColor(andromeda::graphics::ColorChannel ch)
 			{
 				return back_color.getRGBA(ch);
 			}

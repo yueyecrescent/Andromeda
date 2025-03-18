@@ -25,6 +25,7 @@ set(EXECUTABLE_OUTPUT_PATH "${PROJECT_BINARY_DIR}/bin")
 set(LIBRARY_OUTPUT_PATH "${PROJECT_BINARY_DIR}/lib")
 
 file(GLOB SOURCES
+	"dep/opengl/glad/*.c"
 	"src/andromeda/*.cpp"
 	"src/andromeda/app/*.cpp"
 	"src/andromeda/audio/*.cpp"

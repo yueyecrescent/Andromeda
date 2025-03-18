@@ -1,21 +1,19 @@
 #include <andromeda/media/image_factory.h>
 
 #include <andromeda/media/image_process.h>
-#include <andromeda/media/color_math.h>
-#include <andromeda/media/color_rgba.h>
-#include <andromeda/media/pixel.h>
 #include <andromeda/media/raster_image.h>
 
+using namespace andromeda::graphics;
 using namespace andromeda::media;
 
-Pixel* andromeda::media::generatePixelData(int width,int height,int r,int g,int b,int a)
+Pixel* andromeda::media::generatePixelData(int width,int height,unsigned char r,unsigned char g,unsigned char b,unsigned char a)
 {
 	Pixel* data=(Pixel*)malloc(sizeof(Pixel)*width*height);
 	fillPixelData(data,width,height,r,g,b,a);
 	return data;
 }
 
-void andromeda::media::fillPixelData(void *data,int height,int width,int r,int g,int b,int a)
+void andromeda::media::fillPixelData(void *data,int height,int width,unsigned char r,unsigned char g,unsigned char b,unsigned char a)
 {
 	Pixel p(r,g,b,a);
 	for(int i;i<width*height;++i)

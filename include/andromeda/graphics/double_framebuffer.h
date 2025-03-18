@@ -1,7 +1,7 @@
 #ifndef ANDROMEDA_GRAPHICS_DOUBLEFRAMEBUFFER
 #define ANDROMEDA_GRAPHICS_DOUBLEFRAMEBUFFER
 
-#include "../media/color_rgba.h"
+#include "../graphics/color_rgba.h"
 #include "framebuffer.h"
 
 namespace andromeda {
@@ -14,7 +14,7 @@ namespace andromeda {
 		public:
 			DoubleFramebuffer()=default;
 
-			DoubleFramebuffer(int width,int height,andromeda::media::ColorRGBA clearColor={0,0,0,0}) :
+			DoubleFramebuffer(int width,int height,andromeda::graphics::ColorRGBA clearColor={0,0,0,0}) :
 					back_frame_buffer(width,height,clearColor)
 			{
 			}
@@ -31,7 +31,7 @@ namespace andromeda {
 				return back_frame_buffer;
 			}
 
-			inline void setClearColor(andromeda::media::ColorRGBA clearColor={0,0,0,0})
+			inline void setClearColor(andromeda::graphics::ColorRGBA clearColor={0,0,0,0})
 			{
 				back_frame_buffer.setClearColor(clearColor);
 			}

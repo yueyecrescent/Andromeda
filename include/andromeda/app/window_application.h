@@ -5,7 +5,7 @@
 #include <opengl/GLFW/glfw3.h>
 #include "window.h"
 #include "frame_rate.h"
-#include "../media/color_rgba.h"
+#include "../graphics/color_rgba.h"
 #include "../graphics/framebuffer.h"
 #include "../util/log.h"
 #include "application.h"
@@ -48,7 +48,7 @@ namespace andromeda {
 			RenderSys render_sys;
 		public:
 
-			WindowApplication(const char *window_title=nullptr,int width=800,int height=600,andromeda::image::ColorRGBA backColor_={0,0,0,0},bool isfullscreen=false,GLFWmonitor *monitor_=glfwGetPrimaryMonitor())
+			WindowApplication(const char *window_title=nullptr,int width=800,int height=600,andromeda::graphics::ColorRGBA backColor_={0,0,0,0},bool isfullscreen=false,GLFWmonitor *monitor_=glfwGetPrimaryMonitor())
 			{
 				bool init_app=true; //如果需要的库没有加载，则不初始化该类，无法使用该类
 				if(!andromeda::use_opengl)
@@ -169,7 +169,7 @@ namespace andromeda {
 				window.setWindowSize(width,height);
 			}
 
-			__attribute__((always_inline)) inline void setBackColor(andromeda::image::ColorRGBA color)
+			__attribute__((always_inline)) inline void setBackColor(andromeda::graphics::ColorRGBA color)
 			{
 				window.setBackColor(color);
 				framebuffer.setClearColor(color);

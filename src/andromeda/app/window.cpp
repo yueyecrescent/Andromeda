@@ -3,7 +3,7 @@
 #include <andromeda/util/log.h>
 
 using namespace andromeda::app;
-using namespace andromeda::media;
+using namespace andromeda::graphics;
 
 namespace andromeda {
 	extern void _glfw_framebuffer_size_callback(GLFWwindow *window,int width,int height);

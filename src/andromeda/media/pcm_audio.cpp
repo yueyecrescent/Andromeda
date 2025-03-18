@@ -3,11 +3,11 @@
 #include <malloc.h>
 #include <string.h>
 #include <math.h>
-#include <andromeda/media/color_math.h>
 #include <andromeda/media/codec.h>
 #include <andromeda/util/linked_chunk_buffer.h>
 #include <andromeda/media/audio_factory.h>
 #include <andromeda/media/video_factory.h>
+#include <andromeda/math/operations.h>
 
 using namespace andromeda::media;
 using namespace andromeda::util;

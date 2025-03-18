@@ -7,11 +7,10 @@
 
 #include <string.h>
 #include <andromeda/media/image_process.h>
-#include <andromeda/media/pixel.h>
 #include <andromeda/media/image_factory.h>
-#include <andromeda/media/color_rgba.h>
 
 using namespace andromeda::media;
+using namespace andromeda::graphics;
 
 RasterImage::RasterImage(int img_width,int img_height,Pixel* data,bool alloc_if_null) :
 		height(img_height), width(img_width), pixels(data)
