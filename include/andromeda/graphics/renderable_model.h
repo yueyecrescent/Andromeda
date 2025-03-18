@@ -53,7 +53,7 @@ namespace andromeda {
 			 * 不同属性以','隔开，部分属性名称(C、T)后可选加数字，例如T0表示索引0的纹理坐标，T1表示索引1的纹理坐标，不加数字默认为索引0，加了但不存在该索引则忽略该索引。
 			 * texture_types为要加载的纹理贴图类型，详细种类缩写见Texture2D.cpp中的parseTextureType()
 			*/
-			static RenderableModel* loadModel(const char* model_path,GeoStrategy geo_strategy,const char* attrib_order="V,X",const char *texture_types="Co",int post_process=aiProcess_Triangulate|aiProcess_FlipUVs);
+			static RenderableModel* load3DModel(const char* model_path,GeoStrategy geo_strategy,const char* attrib_order="V,X",const char *texture_types="Co",int post_process=aiProcess_Triangulate|aiProcess_FlipUVs);
 		};
 	}
 }

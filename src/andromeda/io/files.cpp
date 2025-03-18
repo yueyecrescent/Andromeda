@@ -3,8 +3,9 @@
 #include <fstream>
 #include <iostream>
 #include <string.h>
+#include <rapidcsv/rapidcsv.h>
 
-#if __cpp_lib_filesystem
+#ifdef __cpp_lib_filesystem
 #include <filesystem>
 using namespace std::filesystem;
 #elif __cplusplus >= 201103L
@@ -59,4 +60,9 @@ std::string andromeda::io::getFileDir(std::string file_path)
 	static const char _path_separators[3]={WIN32_PATH_SEPARATOR,UNIX_PATH_SEPARATOR,'\0'};
 	std::string f_path=file_path;
 	return f_path.substr(0,f_path.find_last_of(_path_separators));
+}
+
+rapidcsv::Document andromeda::io::readCsv(std::string filename,char comma,CsvOption option)
+{
+	return rapidcsv::Document(filename,rapidcsv::LabelParams(option&ROW_HEADER?0:-1,option&COLUMN_HEADER?0:-1),rapidcsv::SeparatorParams(comma));
 }

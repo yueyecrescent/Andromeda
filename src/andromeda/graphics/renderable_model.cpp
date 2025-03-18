@@ -136,7 +136,7 @@ static RenderableModel* laodNodeRenderable(const char *model_path,RenderableMode
 	return model;
 }
 
-RenderableModel* RenderableModel::loadModel(const char *model_path,GeoStrategy geo_strategy,const char *attrib_order,const char *texture_types,int post_process)
+RenderableModel* RenderableModel::load3DModel(const char *model_path,GeoStrategy geo_strategy,const char *attrib_order,const char *texture_types,int post_process)
 {
 	static Assimp::Importer model_importer;
 	textures_loaded.clear();
