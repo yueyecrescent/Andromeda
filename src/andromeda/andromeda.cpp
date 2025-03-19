@@ -12,7 +12,7 @@ namespace andromeda {
 
 	static void _glfw_error_print(int err_code,const char *description)
 	{
-		LOG_COUT("GLFW Error Code:",err_code,"\nDescription:",description)
+		LOG_DEBUG("GLFW Error Code:",err_code,"\nDescription:",description)
 	}
 
 	void _glfw_framebuffer_size_callback(GLFWwindow *window,int width,int height)
@@ -32,7 +32,7 @@ namespace andromeda {
 			return true;
 		if(!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
 		{
-			LOG_COUT("Initialize GLAD failed.");
+			LOG_DEBUG("Initialize GLAD failed.");
 			return false;
 		}
 		loaded_opengl=true;
@@ -42,7 +42,7 @@ namespace andromeda {
 	static void _load_glfw()
 	{
 		if(!glfwInit())
-			LOG_COUT("Initialize GLFW failed.")
+			LOG_DEBUG("Initialize GLFW failed.")
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR,3);
 		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR,3);
 		glfwWindowHint(GLFW_OPENGL_PROFILE,GLFW_OPENGL_CORE_PROFILE);

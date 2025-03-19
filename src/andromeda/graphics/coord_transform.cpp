@@ -1,5 +1,7 @@
 #include <andromeda/graphics/coord_transform.h>
 
+#include <andromeda/graphics/texture_2d.h>
+
 namespace andromeda {
 	namespace graphics {
 		void gui2uv(float input_x1,float input_y1,float input_x2,float input_y2,float& output_x1,float& output_y1,float& output_x2,float& output_y2,Texture2D* texture)

@@ -36,7 +36,7 @@ bool Framebuffer::alloc(int try_timeout)
 	{
 		if(try_timeout<0) //用尽了尝试分配的次数则返回分配失败
 		{
-			LOG_COUT("Framebuffer initialize failed.")
+			LOG_DEBUG("Framebuffer initialize failed.")
 			return false;
 		}
 		else

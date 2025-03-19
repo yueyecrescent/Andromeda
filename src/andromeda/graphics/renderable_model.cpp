@@ -18,7 +18,7 @@ namespace andromeda {
 	}
 }
 
-static Renderable* loadTextures(const char *model_path,Renderable *renderable,aiMaterial *material,aiTextureType type)
+static Renderable* loadTextures(const char* model_path,Renderable* renderable,aiMaterial* material,aiTextureType type)
 {
 	ArrayList<Texture2D>& textures=renderable->textures;
 	unsigned int texture_count=material->GetTextureCount(type);
@@ -49,7 +49,7 @@ static Renderable* loadTextures(const char *model_path,Renderable *renderable,ai
 	return renderable;
 }
 
-static Renderable loadRenderable(const char *model_path,aiMesh *mesh,const aiScene *scene,GeoStrategy geo_strategy,const char *attrib_order,const char *texture_types)
+static Renderable loadRenderable(const char* model_path,aiMesh* mesh,const aiScene* scene,GeoStrategy geo_strategy,const char* attrib_order,const char* texture_types)
 {
 	Renderable renderable;
 	ArrayList<float>& vertex_data=renderable.vertex_data;
@@ -122,7 +122,7 @@ static Renderable loadRenderable(const char *model_path,aiMesh *mesh,const aiSce
 	return renderable;
 }
 
-static RenderableModel* laodNodeRenderable(const char *model_path,RenderableModel *model,aiNode *node,const aiScene *scene,GeoStrategy geo_strategy,const char *attrib_order,const char *texture_types)
+static RenderableModel* laodNodeRenderable(const char* model_path,RenderableModel* model,aiNode* node,const aiScene* scene,GeoStrategy geo_strategy,const char* attrib_order,const char* texture_types)
 {
 	for(unsigned int idx=0;idx<node->mNumMeshes;++idx) //加载当前节点的全部Mesh
 	{
@@ -136,14 +136,14 @@ static RenderableModel* laodNodeRenderable(const char *model_path,RenderableMode
 	return model;
 }
 
-RenderableModel* RenderableModel::load3DModel(const char *model_path,GeoStrategy geo_strategy,const char *attrib_order,const char *texture_types,int post_process)
+RenderableModel* RenderableModel::load3DModel(const char* model_path,GeoStrategy geo_strategy,const char* attrib_order,const char* texture_types,int post_process)
 {
 	static Assimp::Importer model_importer;
 	textures_loaded.clear();
 	const aiScene* scene=model_importer.ReadFile(model_path,post_process);
 	if(!scene||(scene->mFlags&AI_SCENE_FLAGS_INCOMPLETE)||!scene->mRootNode) //加载失败
 	{
-		LOG_COUT("Loading model failed: ",model_importer.GetErrorString());
+		LOG_ERROR("Loading model failed: ",model_importer.GetErrorString());
 		return nullptr;
 	}
 	RenderableModel* model=new RenderableModel();

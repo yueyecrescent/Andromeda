@@ -36,8 +36,8 @@ namespace andromeda {
 		template<typename Func>
 		struct __degenerate_func_impl
 		{
-			typedef Func result_type;//结果类型
-			typedef void class_type;//如果是成员函数，则是这个类的类型，如果不是成员函数，则为void
+			typedef Func result_type; //结果类型
+			typedef void class_type; //如果是成员函数，则是这个类的类型，如果不是成员函数，则为void
 		};
 		//特化成员函数指针的退化模板
 		template<typename Class,typename Func>
@@ -89,7 +89,7 @@ namespace andromeda {
 		{
 			static std::function<RetType(ArgsType...)> bind(typename func_type<Class,RetType,ArgsType...>::result_type func,Class* cls)
 			{
-				return [=](ArgsType&&... args)
+				return [=](ArgsType&& ... args)
 				{
 					return (cls->*func)(std::forward<decltype(args)>(args)...);
 				};
@@ -102,7 +102,7 @@ namespace andromeda {
 		{
 			std::function<RetType(ArgsType...)> bind(typename func_type<void,RetType,ArgsType...>::result_type func,void* cls=nullptr)
 			{
-				return [=](ArgsType&&... args)
+				return [=](ArgsType&& ... args)
 				{
 					return (*func)(std::forward<decltype(args)>(args)...);
 				};
@@ -141,11 +141,12 @@ namespace andromeda {
 			static const bool result=false;
 		};
 
-#define	IS_BASIC_TYPE(T)	template<>\
-							struct __is_basic_type_impl<T>\
-							{\
-								static const bool result=true;\
-							};
+#define	IS_BASIC_TYPE(T)\
+		template<>\
+		struct __is_basic_type_impl<T>\
+		{\
+			static const bool result=true;\
+		};
 		//8位
 		IS_BASIC_TYPE(char)
 		IS_BASIC_TYPE(unsigned char)

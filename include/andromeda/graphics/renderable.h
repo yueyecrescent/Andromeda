@@ -55,12 +55,12 @@ namespace andromeda {
 			}
 
 			template<typename T>
-			inline T& appendDivisorData(T &data)
+			inline T& appendDivisorData(T& data)
 			{
 				instance_divisor_data.add(&data,sizeof(T));
 			}
 
-			inline void appendDivisorData(void *data,size_t size)
+			inline void appendDivisorData(void* data,size_t size)
 			{
 				instance_divisor_data.add((unsigned char*)data,size);
 			}
@@ -78,7 +78,7 @@ namespace andromeda {
 
 		enum struct GeoStrategy : GLuint
 		{
-			POINTS=0, LINES, LINE_LOOP, LINE_STRIP, TRIANGLES, TRIANGLE_STRIP, TRIANGLE_FAN
+			POINTS=0, LINES, LINE_LOOP, LINE_STRIP, TRIANGLES, TRIANGLE_STRIP, TRIANGLE_FAN, GL_QUADS, GL_QUAD_STRIP
 		};
 
 		enum struct DataStrategy : GLuint
@@ -153,10 +153,10 @@ namespace andromeda {
 			void pretransformVertex();
 
 			//设置顶点属性和对应的着色器程序。如果是nullptr则使用此前的顶点属性或着色器
-			void setVertexAttributeShader(VertexAttribute *vertex_attribs=nullptr,ShaderProgram *shader=nullptr);
+			void setVertexAttributeShader(VertexAttribute* vertex_attribs=nullptr,ShaderProgram* shader=nullptr);
 
 			//设置绘制策略，顶点属性或着色器为nullptr的话，则使用此前的顶点属性或着色器
-			void setDrawStrategy(DrawStrategy strategy,VertexAttribute *vertex_attribs=nullptr,ShaderProgram *shader=nullptr)
+			void setDrawStrategy(DrawStrategy strategy,VertexAttribute* vertex_attribs=nullptr,ShaderProgram* shader=nullptr)
 			{
 				draw_strategy=strategy;
 				setVertexAttributeShader(vertex_attribs,shader);
@@ -197,7 +197,7 @@ namespace andromeda {
 			/**
 			 * 设置顶点数据，数据将拷贝并储存
 			 */
-			inline Renderable& setVertexData(float *vertex_data,size_t vertex_data_count,unsigned int *element_data=nullptr,size_t element_count=0)
+			inline Renderable& setVertexData(float* vertex_data,size_t vertex_data_count,unsigned int* element_data=nullptr,size_t element_count=0)
 			{
 				this->vertex_data.clear();
 				this->vertex_data.add(vertex_data,vertex_data_count);

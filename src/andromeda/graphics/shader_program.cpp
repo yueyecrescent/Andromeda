@@ -34,7 +34,7 @@ bool ShaderProgram::checkShader(const char* shader_name,GLuint shader,bool print
 	{
 		char info[512]{0};
 		glGetShaderInfoLog(shader,512,NULL,info);
-		LOG_COUT(shader_name,"\ncompile failed:",info,"\nShader ID:",shader)
+		LOG_DEBUG(shader_name,"\ncompile failed:",info,"\nShader ID:",shader)
 	}
 	return (bool)success;
 }
@@ -47,7 +47,7 @@ bool ShaderProgram::checkShaderProgram(GLuint shader_program,bool print_log)
 	{
 		char info[512];
 		glGetProgramInfoLog(shader_program,512,NULL,info);
-		LOG_COUT("Shader Program link failed:",info,"\nID:",shader_program)
+		LOG_DEBUG("Shader Program link failed:",info,"\nID:",shader_program)
 	}
 	return (bool)success;
 }

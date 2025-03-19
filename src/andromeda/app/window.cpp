@@ -13,9 +13,9 @@ Window::Window(const char *title,int width,int height,ColorRGBA backColor_,bool 
 		width(width), height(height), is_fullScreen(isfullscreen), title(title), back_color(backColor_), monitor(monitor_)
 {
 	if(!title)
-		LOG_COUT("Window name cannot be null")
+		LOG_DEBUG("Window name cannot be null")
 	if(!(window_id=glfwCreateWindow(width,height,title,isfullscreen?monitor_:nullptr,nullptr)))
-		LOG_COUT("Create Window failed")
+		LOG_DEBUG("Create Window failed")
 	else
 		glfwSetFramebufferSizeCallback(window_id,andromeda::_glfw_framebuffer_size_callback);
 }

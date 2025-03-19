@@ -14,7 +14,7 @@ void andromeda::util::clearOpenGLError()
 void andromeda::util::checkOpenGLError()
 {
 	while(GLenum error= glGetError())
-		LOG_COUT("OpenGL error code:",error)
+		LOG_DEBUG("OpenGL error code:",error)
 }
 
 size_t andromeda::util::getGLTypeSize(GLint type)

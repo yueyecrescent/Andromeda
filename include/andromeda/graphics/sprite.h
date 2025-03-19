@@ -5,7 +5,7 @@
 #include <map>
 #include "texture_2d.h"
 #include "coord_transform.h"
-#include "renderable.h"
+#include "geometry.h"
 #include "../io/files.h"
 #include "../util/array_list.h"
 
@@ -23,20 +23,14 @@ namespace andromeda {
 			float u1,v1,u2,v2; //uv1为左下角，uv2为右上角
 		} SpritePixelCoord;
 
-		typedef struct SpriteFrame
-		{
-			SpriteUvCoord uv_index;
-			float time; //持续时间
-		} SpriteFrame;
-
-		//自动裁剪的精灵表
-		template<typename IndexType,typename Derived>
+		//自动裁剪的精灵表，该类的任何派生类都需要在andromeda::graphics命名空间下，因为类型推断traits类__deduce_type在该命名空间下
+		template<typename Derived>
 		class SpriteSheet
 		{
 		protected:
 			Texture2D sheet_texture;
 			andromeda::util::ArrayList<SpriteUvCoord> splited_area;
-		public:
+		private:
 			SpriteSheet()=default;
 
 			SpriteSheet(Texture2D texture,andromeda::util::ArrayList<SpriteUvCoord> splited_area) :
@@ -44,7 +38,9 @@ namespace andromeda {
 			{
 
 			}
+			friend Derived; //防止用户CRTP继承时传错派生类模板参数，且该类的子类不能再派生子类，限制了继承链只有该父类及其直接子类
 
+		public:
 			__attribute__((always_inline)) inline operator GLuint()
 			{
 				return sheet_texture.texture_id;
@@ -55,9 +51,10 @@ namespace andromeda {
 				return sheet_texture;
 			}
 
-			inline SpriteUvCoord clip(IndexType index)
+			template<typename IndexType>
+			inline SpriteUvCoord getSprite(IndexType index)
 			{
-				return (Derived*)this->clip(index);
+				return (Derived*)this->getSprite(index);
 			}
 
 			//GUI坐标系下的裁剪
@@ -68,7 +65,7 @@ namespace andromeda {
 				return area;
 			}
 
-			inline SpriteUvCoord clipInNormalizedCoord(float x,float y,float width,float height)
+			inline SpriteUvCoord clipInNormalizedGuiCoord(float x,float y,float width,float height)
 			{
 				SpriteUvCoord area;
 				gui2uv(x,y,x+width,y+height,area.u1,area.v1,area.u2,area.v2,nullptr);
@@ -80,11 +77,14 @@ namespace andromeda {
 				return SpriteUvCoord{x,y,x+width,y+height};
 			}
 
-			inline SpriteUvCoord clip(int index)
+			inline SpriteUvCoord getSprite(int index)
 			{
 				return splited_area[index];
 			}
 		};
+
+#include "../traits/deduction.h"
+#define DefineSpriteSheet(index_type,sprite_sheet_type) set_mapping_type(index_type,sprite_sheet_type)
 
 		//裁剪索引，左上角为原点，向右向下为正
 		typedef struct SpriteSheetIndex
@@ -93,10 +93,11 @@ namespace andromeda {
 		} SpriteSheetIndex;
 
 		//等分裁剪，每个裁剪区域相同大小
-		class EqualDivisionSpriteSheet:public SpriteSheet<SpriteSheetIndex,EqualDivisionSpriteSheet>
+		class EqualDivisionSpriteSheet:public SpriteSheet<EqualDivisionSpriteSheet>
 		{
 		private:
-			using SpriteSheet<SpriteSheetIndex,EqualDivisionSpriteSheet>::sheet_texture;
+			using SpriteSheet<EqualDivisionSpriteSheet>::sheet_texture;
+			using SpriteSheet<EqualDivisionSpriteSheet>::splited_area;
 			//多少行多少列
 			int column,row;
 			//float均为归一化坐标，裁剪区域在精灵表中的坐标，左上角为原点，向右向下为正
@@ -147,7 +148,13 @@ namespace andromeda {
 			{
 				return SpriteUvCoord{clip_offset_x+(sprite_width+clip_stride_x)*x,1-(clip_offset_y+(sprite_height+clip_stride_y)*y+sprite_height),clip_offset_x+(sprite_width+clip_stride_x)*x+sprite_width,1-(clip_offset_y+(sprite_height+clip_stride_y)*y)};
 			}
+
+			inline SpriteUvCoord getSprite(SpriteSheetIndex xy_index)
+			{
+				return splited_area[xy_index.y*column+xy_index.x];
+			}
 		};
+		DefineSpriteSheet(SpriteSheetIndex,EqualDivisionSpriteSheet)
 
 		//指定裁剪区域是采用UV坐标裁剪还是像素坐标裁剪
 		enum SpriteSplitMode
@@ -158,26 +165,42 @@ namespace andromeda {
 		extern const char* default_split_info_names[4];
 
 		//紧凑的精灵表，裁剪区域大小、位置不固定，需要额外的CSV文件指定每个裁剪区域的位置和尺寸
-		class CompactSpriteSheet:public SpriteSheet<std::string,CompactSpriteSheet>
+		class CompactSpriteSheet:public SpriteSheet<CompactSpriteSheet>
 		{
 		private:
-			using SpriteSheet<std::string,CompactSpriteSheet>::sheet_texture;
-			using SpriteSheet<std::string,CompactSpriteSheet>::splited_area;
+			using SpriteSheet<CompactSpriteSheet>::sheet_texture;
+			using SpriteSheet<CompactSpriteSheet>::splited_area;
 			std::map<std::string,int> idx_mapping;
 
 		public:
 			//info_names依次储存了CSV中切割精灵的左上角x、左上角y、宽度、高度列的名字，mode指定坐标是UV坐标（原点在左下角）还是像素坐标（原点在左上角）
 			CompactSpriteSheet(Texture2D texture,const char* split_file,char comma=',',andromeda::io::CsvOption option=andromeda::io::CsvOption::BOTH_HEADER,const char** info_names=default_split_info_names,SpriteSplitMode mode=PIXEL_COORD,AreaCoordTransform coord_transform=&gui2uv);
 
-			inline SpriteUvCoord clip(std::string split_key)
+			inline SpriteUvCoord getSprite(std::string split_key)
 			{
 				return splited_area[idx_mapping[split_key]];
 			}
 		};
+		DefineSpriteSheet(std::string,CompactSpriteSheet)
 
-		class Sprite:public Renderable
+		typedef struct SpriteFrame
 		{
+			SpriteUvCoord uv_coords;
+			float time; //持续时间
+		} SpriteFrame;
+
+		class Sprite:public Polygon
+		{
+		protected:
 			void* sprite_sheet;
+			andromeda::util::ArrayList<SpriteFrame> frames;
+
+		public:
+			template<typename IndexType>
+			void appendFrame(IndexType idx,float time)
+			{
+				frames.add({((typename __mapping_type<IndexType>::result_type*)sprite_sheet)->getSprite(idx),time});
+			}
 		};
 	}
 }

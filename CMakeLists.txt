@@ -3,11 +3,11 @@ cmake_minimum_required (VERSION 3.5)
 # Build shared lib when set to true, or static lib when set to false.
 set(BUILD_SHARED_LIB false)
 # Set target OS type, valid type are Windows, Linux.
-set(BUILD_TARGET_OS Windows)
+set(BUILD_TARGET_SYSTEM Windows)
 # Set target architecture type, valid type are x86_64, aarch64.
 set(BUILD_TARGET_ARCHITECTURE x86_64)
 
-if(BUILD_TARGET_OS MATCHES "Windows")
+if(BUILD_TARGET_SYSTEM MATCHES "Windows")
 	if(BUILD_TARGET_ARCHITECTURE MATCHES "x86_64")
 		message(STATUS "Building target x86_64 Windows")
 		set(CMAKE_TOOLCHAIN_FILE "./cmake/x86_64-windows-toolchain.cmake")

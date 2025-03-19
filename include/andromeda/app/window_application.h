@@ -46,24 +46,24 @@ namespace andromeda {
 			using Application<Derived>::turn;
 
 			RenderSys render_sys;
-		public:
 
-			WindowApplication(const char *window_title=nullptr,int width=800,int height=600,andromeda::graphics::ColorRGBA backColor_={0,0,0,0},bool isfullscreen=false,GLFWmonitor *monitor_=glfwGetPrimaryMonitor())
+		public:
+			WindowApplication(const char* window_title=nullptr,int width=800,int height=600,andromeda::graphics::ColorRGBA backColor_={0,0,0,0},bool isfullscreen=false,GLFWmonitor* monitor_=glfwGetPrimaryMonitor())
 			{
 				bool init_app=true; //如果需要的库没有加载，则不初始化该类，无法使用该类
 				if(!andromeda::use_opengl)
 				{
-					LOG_COUT("OpenGL is not used. Please set andromeda::use_opengl to true.")
+					LOG_DEBUG("OpenGL is not used. Please set andromeda::use_opengl to true.")
 					init_app=false;
 				}
 				if(!andromeda::use_openal)
 				{
-					LOG_COUT("OpenAL is not used. Please set andromeda::use_openal to true.")
+					LOG_DEBUG("OpenAL is not used. Please set andromeda::use_openal to true.")
 					init_app=false;
 				}
 				if(!init_app)
 				{
-					LOG_COUT("Application not initialized.")
+					LOG_DEBUG("Application not initialized.")
 					return;
 				}
 				synchronize_fps=true; //默认开启帧率同步
