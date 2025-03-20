@@ -14,11 +14,12 @@ namespace andromeda {
 			friend SplitStrings andromeda::util::split(const char* str,const char* delim);
 		private:
 			using ArrayList<const char*>::ArrayList;
+			using ArrayList<const char*>::release;
 			SplitStrings()=default;
 		public:
 			~SplitStrings()
 			{
-				free((void*)elements[0]);
+				release();
 			}
 		};
 

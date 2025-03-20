@@ -11,7 +11,7 @@ VertexAttributeInfo::VertexAttributeInfo(const char* info)
 	SplitStrings attrib_str=split(info,":");
 	SplitStrings attrib_name_index=split(attrib_str[0],".");
 	name=str_cpy(attrib_name_index[0]); //属性名称
-	if(attrib_name_index.getLength()>1)
+	if(attrib_name_index.length()>1)
 		index=std::stoi(attrib_str[1]);
 	const char* attrib_data_info_str=attrib_str[1];
 	register int pos=0;
@@ -56,7 +56,7 @@ void VertexAttribute::setAttribute(const char* attrib_str)
 {
 	SplitStrings attrib_str_arr=split(attrib_str,","); //析构时自动释放内存
 	size_t offset=0;
-	for(int i=0;i<attrib_str_arr.getLength();++i)
+	for(int i=0;i<attrib_str_arr.length();++i)
 	{
 		VertexAttributeInfo& attrib_info=attribs.add_placement_new(attrib_str_arr[i]);
 		if(attrib_info.index==-1)
@@ -69,7 +69,7 @@ void VertexAttribute::setAttribute(const char* attrib_str)
 
 VertexAttributeInfo VertexAttribute::getVertexAttributeInfo(const char* attrib_name)
 {
-	for(int i=0;i<attribs.getLength();++i)
+	for(int i=0;i<attribs.length();++i)
 		if(strcmp(attribs[i].name,attrib_name))
 			return attribs[i];
 	return VertexAttributeInfo(); //无效查询

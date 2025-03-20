@@ -101,7 +101,7 @@ namespace andromeda {
 			__attribute__((always_inline)) inline void load(GLuint vao) //在glBindBuffer()后、glDraw*()前调用，用于把顶点属性格式装载进指定的VAO中
 			{
 				glBindVertexArray(vao);
-				for(size_t i=0;i<attribs.getLength();++i)
+				for(size_t i=0;i<attribs.length();++i)
 				{
 					VertexAttributeInfo& attrib=attribs[i];
 					glVertexAttribPointer(attrib.index,attrib.num,attrib.type,attrib.normalized,vertex_size,(void*)(attrib.offset));

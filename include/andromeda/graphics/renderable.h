@@ -135,12 +135,12 @@ namespace andromeda {
 
 			inline size_t getVertexCount()
 			{
-				return vertex_data.getLength()/vertex_attribs->getVertexSize();
+				return vertex_data.length()/vertex_attribs->getVertexSize();
 			}
 
 			inline size_t getElementCount()
 			{
-				return element_data.getLength();
+				return element_data.length();
 			}
 
 			inline void use()
@@ -169,7 +169,7 @@ namespace andromeda {
 				{
 				case DrawStrategy::INSTANCED:
 				{
-					size_t instance_count=direct_instance_list.getLength()+named_instance_map.size();
+					size_t instance_count=direct_instance_list.length()+named_instance_map.size();
 					if(instance_count<1)
 						return;
 					bufferDivisorData(DataStrategy::DYNAMIC_DRAW);

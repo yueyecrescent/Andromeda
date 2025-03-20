@@ -20,13 +20,13 @@ RenderableInstance& Renderable::instance(std::string id)
 
 void Renderable::loadTextures(bool generate_minimap,bool release_image)
 {
-	for(int i=0;i<textures.getLength();++i)
+	for(int i=0;i<textures.length();++i)
 		textures[i].load(i,0,generate_minimap,release_image);
 }
 
 void Renderable::useTextures()
 {
-	for(int i=0;i<textures.getLength();++i)
+	for(int i=0;i<textures.length();++i)
 		textures[i].use(i);
 }
 
@@ -70,17 +70,17 @@ void Renderable::bufferDivisorData(DataStrategy data_strategy)
 		glGenBuffers(1,&instance_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER,instance_vbo);
 	instance_divisor_data.clear();
-	for(size_t direct_idx=0;direct_idx<direct_instance_list.getLength();++direct_idx)
+	for(size_t direct_idx=0;direct_idx<direct_instance_list.length();++direct_idx)
 	{
 		RenderableInstance& instance=direct_instance_list[direct_idx];
-		instance_divisor_data.add(instance.instance_divisor_data,instance.instance_divisor_data.getLength());
+		instance_divisor_data.add(instance.instance_divisor_data,instance.instance_divisor_data.length());
 	}
 	for(auto iter=named_instance_map.begin();iter!=named_instance_map.end();iter++)
 	{
 		RenderableInstance& instance=(*iter).second;
-		instance_divisor_data.add(instance.instance_divisor_data,instance.instance_divisor_data.getLength());
+		instance_divisor_data.add(instance.instance_divisor_data,instance.instance_divisor_data.length());
 	}
-	glBufferData(GL_ARRAY_BUFFER,instance_divisor_data.getLength(),instance_divisor_data,(GLuint)data_strategy); //实例数据是需要经常变化的
+	glBufferData(GL_ARRAY_BUFFER,instance_divisor_data.length(),instance_divisor_data,(GLuint)data_strategy); //实例数据是需要经常变化的
 	glBindBuffer(GL_ARRAY_BUFFER,0);
 }
 

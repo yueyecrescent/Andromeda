@@ -30,7 +30,7 @@ static Renderable* loadTextures(const char* model_path,Renderable* renderable,ai
 		material->GetTexture(type,idx,&str);
 		const char* texture_path=str_join(getFileDir(model_path).c_str(),PATH_SEPARATOR,str.C_Str());
 		bool loaded=false; //是否已经加载过
-		for(size_t loaded_texture_idx=0;loaded_texture_idx<textures_loaded.getLength();++loaded_texture_idx)
+		for(size_t loaded_texture_idx=0;loaded_texture_idx<textures_loaded.length();++loaded_texture_idx)
 		{
 			Texture2D* loaded_texture=textures_loaded[loaded_texture_idx];
 			if(std::strcmp(loaded_texture->getTexturePath(),texture_path)==0)
@@ -54,7 +54,7 @@ static Renderable loadRenderable(const char* model_path,aiMesh* mesh,const aiSce
 	Renderable renderable;
 	ArrayList<float>& vertex_data=renderable.vertex_data;
 	SplitStrings attribs=split(attrib_order,",");
-	size_t attrib_num=attribs.getLength();
+	size_t attrib_num=attribs.length();
 	for(unsigned int vertex_idx=0;vertex_idx<mesh->mNumVertices;++vertex_idx) //加载顶点数据
 	{
 		for(size_t attrib_idx=0;attrib_idx<attrib_num;++attrib_idx)
@@ -115,7 +115,7 @@ static Renderable loadRenderable(const char* model_path,aiMesh* mesh,const aiSce
 	{
 		SplitStrings textures_types_str=split(texture_types,",");
 		aiMaterial* material=scene->mMaterials[mesh->mMaterialIndex];
-		for(size_t type_idx=0;type_idx<textures_types_str.getLength();++type_idx)
+		for(size_t type_idx=0;type_idx<textures_types_str.length();++type_idx)
 			loadTextures(model_path,&renderable,material,(aiTextureType)parseTextureType(textures_types_str[type_idx]));
 	}
 	renderable.geo_strategy=geo_strategy;
