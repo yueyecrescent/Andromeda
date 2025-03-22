@@ -3,6 +3,7 @@
 #include <thread>
 
 using namespace andromeda::app;
+using namespace andromeda::util;
 using namespace std::chrono;
 
 void FrameRate::init()
@@ -11,7 +12,7 @@ void FrameRate::init()
 	tpf=0;
 	fps=0;
 	fps_count=0;
-	past_time=high_resolution_clock::now();
+	past_time=HRC_TIME_NOW;
 }
 
 void FrameRate::set_fps_limit(int _fps_limit)
@@ -30,7 +31,7 @@ void FrameRate::set_fps_limit(int _fps_limit)
 void FrameRate::calc()
 {
 	++fps_count;
-	now_time=high_resolution_clock::now();
+	now_time=HRC_TIME_NOW;
 	int tpf_nano_sec=HRC_TIME_DURATION_TO_NANOSEC(now_time-past_time);
 	tpf=tpf_nano_sec/1E9;
 	if(limit_fps)
@@ -38,7 +39,7 @@ void FrameRate::calc()
 		delta_t+=tpf_limit;
 		past_time+=nanoseconds(tpf_limit_nano_sec);
 		nanoseconds sleep_time=nanoseconds(tpf_limit_nano_sec-tpf_nano_sec); //sleep()以后浪费的额外时间算入下一帧花费的时间，保证每帧起始时间点都是tpf_limit的整数倍
-#ifdef DEBUG
+#ifdef DEBUG_FrameRate
 		std::cout<<"FrameRate sleep for "<<(sleep_time.count()/1E6)<<"ms"<<std::endl;
 #endif
 		if((sleep_time.count()>0))

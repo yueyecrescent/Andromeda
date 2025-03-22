@@ -2,21 +2,14 @@
 #define ANDROMEDA_APP_FRAMERATE
 
 #include <chrono>
-//高精度时钟的time_point转换成秒
-#define HRC_TIME_DURATION_TO_SEC(delta_time) ((double)std::chrono::duration_cast<std::chrono::nanoseconds>(delta_time).count()/1E9)
-#define HRC_TIME_DURATION_TO_MILSEC(delta_time) ((double)std::chrono::duration_cast<std::chrono::nanoseconds>(delta_time).count()/1E6)
-#define HRC_TIME_DURATION_TO_NANOSEC(delta_time) ((double)std::chrono::duration_cast<std::chrono::nanoseconds>(delta_time).count())
+#include "../util/timer.h"
 
 namespace andromeda {
 	namespace app {
 		class FrameRate
 		{
-		public:
-			typedef std::chrono::time_point<std::chrono::high_resolution_clock> high_resolution_time_point; //采用的高精度时间点类型
-
 		private:
-			high_resolution_time_point now_time,past_time;
-			double time_unit;
+			andromeda::util::high_resolution_time_point now_time,past_time;
 			double delta_t=0,tpf=0,tpf_limit=-1;
 			bool limit_fps=false;
 			int fps=0,fps_count=0,fps_limit=0,tpf_limit_nano_sec=-1; //fps_limit为最大帧率限制（<=0表示不限制），在调用calc()时如果单帧的时间不足1/fps_limit秒则会sleep该线程直到该帧的秒数占用达到1/fps_limit秒

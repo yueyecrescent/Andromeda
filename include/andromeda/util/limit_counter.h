@@ -8,14 +8,17 @@ namespace andromeda {
 		class LimitCounter
 		{
 		private:
-			T _start;
-			T _end;
-			T counter;
+			T counter=-1;
+
 		public:
+			//如果_start>_end，则counter在自增的时候恒定为_start，自减的时候恒定为_end
+			T _start=-1;
+			T _end=-1;
+
+			LimitCounter()=default;
 			LimitCounter(T start_value,T end_value) :
-					_start(start_value), _end(end_value)
+					_start(start_value), _end(end_value), counter(start_value)
 			{
-				counter=start_value;
 			}
 
 			__attribute__((always_inline)) inline operator T&()
@@ -25,32 +28,35 @@ namespace andromeda {
 
 			__attribute__((always_inline)) inline T& inc() //返回自增的结果值
 			{
-				if(++counter>_end)
+				++counter;
+				if(counter<_start||counter>_end)
 					counter=_start; //如果越过_end则回到_start
 				return counter;
 			}
 
 			__attribute__((always_inline)) inline T& dec() //返回自减的结果值
 			{
-				if(--counter<_start)
+				--counter;
+				if(counter<_start||counter>_end)
 					counter=_end;
 				return counter;
 			}
 
 			T& operator++() //前置++
 			{
-				return counter.inc();
+				return inc();
 			}
 
 			T& operator--()
 			{
-				return counter.dec();
+				return dec();
 			}
 
 			T operator++(int) //后置++
 			{
 				T old_counter=counter;
-				if(++counter>_end)
+				++counter;
+				if(counter<_start||counter>_end)
 					counter=_start; //如果越过_end则回到_start
 				return old_counter;
 			}
@@ -58,7 +64,8 @@ namespace andromeda {
 			T operator--(int)
 			{
 				T old_counter=counter;
-				if(--counter<_start)
+				--counter;
+				if(counter<_start||counter>_end)
 					counter=_end;
 				return old_counter;
 			}
