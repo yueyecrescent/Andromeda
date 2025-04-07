@@ -1,8 +1,8 @@
 #ifndef ANDROMEDA_MEDIA_VIDEOFACTORY
 #define ANDROMEDA_MEDIA_VIDEOFACTORY
 
-#include <avcodec/libavcodec/avcodec.h>
-#include <avcodec/libavformat/avformat.h>
+#include <ffmpeg/libavcodec/avcodec.h>
+#include <ffmpeg/libavformat/avformat.h>
 #include <iostream>
 
 namespace andromeda {

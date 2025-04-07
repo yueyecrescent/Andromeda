@@ -23,13 +23,14 @@ namespace andromeda {
 			template<typename ...Ts>
 			__attribute__((always_inline)) inline void addVertex(andromeda::math::Vector2f pos,Ts ... extra_data)
 			{
-				vertices.add(pos);
-				vertex_extra_data.add(extra_data...);
+				vertices.addv(pos);
+				vertex_extra_data.addv(extra_data...);
 			}
 
+			//生成顶点数据
 			void generateVertexData();
 
-			static Polygon Quad();
+			static Polygon ptQuad(float width,float height);
 		};
 	}
 }

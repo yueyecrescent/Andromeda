@@ -2,7 +2,8 @@
 #include <opengl/GLFW/glfw3.h>
 #include <openal/alc.h>
 #include <openal/al.h>
-#include "../../include/andromeda/util/log.h"
+#include <andromeda/util/log.h>
+#include <andromeda/app/render_sys.h>
 
 namespace andromeda {
 	bool use_opengl=true;
@@ -10,12 +11,12 @@ namespace andromeda {
 
 	static bool loaded_opengl=false;
 
-	static void _glfw_error_print(int err_code,const char *description)
+	static void _glfw_error_print(int err_code,const char* description)
 	{
 		LOG_DEBUG("GLFW Error Code:",err_code,"\nDescription:",description)
 	}
 
-	void _glfw_framebuffer_size_callback(GLFWwindow *window,int width,int height)
+	void _glfw_framebuffer_size_callback(GLFWwindow* window,int width,int height)
 	{
 		glViewport(0,0,width,height);
 	}
@@ -50,6 +51,7 @@ namespace andromeda {
 		glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
 #endif
 		glfwSetErrorCallback(andromeda::_glfw_error_print);
+		andromeda::app::RenderSys::initProperties();
 	}
 
 	static void _term_glfw()
@@ -73,7 +75,7 @@ namespace andromeda {
 	{
 		audio::al_context=alcGetCurrentContext();
 		audio::al_device=alcGetContextsDevice(audio::al_context);
-		alcMakeContextCurrent(NULL);
+		alcMakeContextCurrent (NULL);
 		alcDestroyContext(audio::al_context);
 		alcCloseDevice(audio::al_device);
 	}

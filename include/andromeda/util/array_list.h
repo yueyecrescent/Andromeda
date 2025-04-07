@@ -14,7 +14,11 @@ namespace andromeda {
 			size_t _capcity=0,extend_capcity=16,last_element_idx=-1;
 			E* _elements;
 		public:
-			ArrayList()=default;
+			ArrayList():
+				ArrayList(8)
+			{
+
+			}
 
 			ArrayList(size_t arr_length) :
 					_capcity(arr_length), last_element_idx(-1), extend_capcity(arr_length), _elements((E*)malloc(sizeof(E)*arr_length))
@@ -38,13 +42,13 @@ namespace andromeda {
 				arr._elements=nullptr;
 			}
 
-			ArrayList(E* elem,size_t len):
-				_elements(elem),_capcity(len),last_element_idx(len-1)
+			ArrayList(E* elem,size_t len) :
+					_elements(elem), _capcity(len), last_element_idx(len-1)
 			{
 			}
 
-			ArrayList(E* elem,size_t len,size_t arr_extend_capcity):
-				_elements(elem),_capcity(len),last_element_idx(len-1),extend_capcity(arr_extend_capcity)
+			ArrayList(E* elem,size_t len,size_t arr_extend_capcity) :
+					_elements(elem), _capcity(len), last_element_idx(len-1), extend_capcity(arr_extend_capcity)
 			{
 			}
 
@@ -53,12 +57,12 @@ namespace andromeda {
 				free(_elements);
 			}
 
-			operator E*()
+			inline operator E*()
 			{
 				return _elements;
 			}
 
-			void operator=(ArrayList& arr)
+			inline void operator=(ArrayList& arr)
 			{
 				_capcity=arr._capcity;
 				last_element_idx=arr.last_element_idx;
@@ -67,7 +71,7 @@ namespace andromeda {
 				memcpy(_elements,arr._elements,sizeof(E)*arr._capcity);
 			}
 
-			void operator=(ArrayList&& arr)
+			inline void operator=(ArrayList&& arr)
 			{
 				_capcity=arr._capcity;
 				last_element_idx=arr.last_element_idx;
@@ -77,7 +81,7 @@ namespace andromeda {
 			}
 
 			template<typename ...Args>
-			E& add_placement_new(Args... args)
+			E& add_placement_new(Args ... args)
 			{
 				if(last_element_idx>=_capcity-1)
 					extendArray(extend_capcity);
@@ -85,34 +89,28 @@ namespace andromeda {
 				return lastElement();
 			}
 
-			void add(E& e)
+			inline void add(E& e)
 			{
 				if(last_element_idx>=_capcity-1)
 					extendArray(extend_capcity);
 				*(_elements+(++last_element_idx))=e;
 			}
 
-			void add(E&& e)
+			inline void add(E&& e)
 			{
 				if(last_element_idx>=_capcity-1)
 					extendArray(extend_capcity);
 				*(_elements+(++last_element_idx))=e;
 			}
 
-			void add(E* es,size_t num)
-			{
-				checkExtendArray(num);
-				memcpy(_elements+last_element_idx,es,sizeof(E)*num);
-			}
-
-			void add(E& e1,E& e2)
+			inline void add(E& e1,E& e2)
 			{
 				add(e1);
 				add(e2);
 			}
 
 			template<typename ...Es>
-			void add(Es& ...es)
+			inline void add(Es& ...es)
 			{
 				checkExtendArray(sizeof...(Es));
 				E arr[sizeof...(Es)]={es...};
@@ -120,38 +118,67 @@ namespace andromeda {
 				last_element_idx+=sizeof...(Es);
 			}
 
-			void add(ArrayList& arr_lst)
+			//直接拷贝传值
+			inline void addv(E e)
+			{
+				if(last_element_idx>=_capcity-1)
+					extendArray(extend_capcity);
+				*(_elements+(++last_element_idx))=e;
+			}
+
+			inline void addv(E e1,E e2)
+			{
+				add(e1);
+				add(e2);
+			}
+
+			template<typename ...Es>
+			inline void addv(Es ...es)
+			{
+				checkExtendArray(sizeof...(Es));
+				E arr[sizeof...(Es)]={es...};
+				memcpy(_elements+last_element_idx+1,arr,sizeof(E)*(sizeof...(Es)));
+				last_element_idx+=sizeof...(Es);
+			}
+
+			inline void add(E* es,size_t num)
+			{
+				checkExtendArray(num);
+				memcpy(_elements+last_element_idx,es,sizeof(E)*num);
+			}
+
+			inline void add(ArrayList& arr_lst)
 			{
 				add(arr_lst._elements(),arr_lst.length());
 			}
 
-			void add(ArrayList&& arr_lst)
+			inline void add(ArrayList&& arr_lst)
 			{
 				add(arr_lst._elements(),arr_lst.length());
 			}
 
-			E& remove()
+			inline E& remove()
 			{
 				return *(_elements+(last_element_idx--));
 			}
 
-			E* remove(size_t num)
+			inline E* remove(size_t num)
 			{
 				last_element_idx-=num;
 				return _elements+last_element_idx+1;
 			}
 
-			E& lastElement()
+			inline E& lastElement()
 			{
 				return *(_elements+last_element_idx);
 			}
 
-			E& get(size_t index)
+			inline E& get(size_t index)
 			{
 				return *(_elements+index);
 			}
 
-			E& operator[](size_t index)
+			inline E& operator[](size_t index)
 			{
 				return *(_elements+index);
 			}
@@ -166,7 +193,7 @@ namespace andromeda {
 				return last_element_idx;
 			}
 
-			inline size_t length()//数组实际使用的长度
+			inline size_t length() //数组实际使用的长度
 			{
 				return last_element_idx+1;
 			}

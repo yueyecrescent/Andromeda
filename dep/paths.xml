@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<cdtprojectproperties>
+  <section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.IncludePaths">
+    <language id="org.eclipse.cdt.core.assembly" name="Assembly Source File"/>
+    <language id="org.eclipse.cdt.core.g++" name="C++ Source File">
+      <includepath workspace_path="true">/Andromeda/include</includepath>
+      <includepath workspace_path="true">/Andromeda/dep</includepath>
+    </language>
+    <language id="org.eclipse.cdt.core.gcc" name="C Source File"/>
+    <language name="Object File"/>
+  </section>
+  <section name="org.eclipse.cdt.internal.ui.wizards.settingswizards.Macros">
+    <language id="org.eclipse.cdt.core.assembly" name="Assembly Source File"/>
+    <language id="org.eclipse.cdt.core.g++" name="C++ Source File"/>
+    <language id="org.eclipse.cdt.core.gcc" name="C Source File"/>
+    <language name="Object File"/>
+  </section>
+</cdtprojectproperties>

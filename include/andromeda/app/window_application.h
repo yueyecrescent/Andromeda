@@ -38,12 +38,12 @@ namespace andromeda {
 			int update_rate_limit=-1;
 
 		protected:
-			using Application<Derived>::_initialize;
-			using Application<Derived>::_preinitialize;
-			using Application<Derived>::_terminate;
-			using Application<Derived>::_update;
-			using Application<Derived>::_render_update;
-			using Application<Derived>::turn;
+			using andromeda::app::Application<Derived>::_initialize;
+			using andromeda::app::Application<Derived>::_preinitialize;
+			using andromeda::app::Application<Derived>::_terminate;
+			using andromeda::app::Application<Derived>::_update;
+			using andromeda::app::Application<Derived>::_render_update;
+			using andromeda::app::Application<Derived>::turn;
 
 			RenderSys render_sys;
 
@@ -53,17 +53,17 @@ namespace andromeda {
 				bool init_app=true; //如果需要的库没有加载，则不初始化该类，无法使用该类
 				if(!andromeda::use_opengl)
 				{
-					LOG_DEBUG("OpenGL is not used. Please set andromeda::use_opengl to true.")
+					LOG_ERROR("OpenGL is not used. Please set andromeda::use_opengl to true.")
 					init_app=false;
 				}
 				if(!andromeda::use_openal)
 				{
-					LOG_DEBUG("OpenAL is not used. Please set andromeda::use_openal to true.")
+					LOG_ERROR("OpenAL is not used. Please set andromeda::use_openal to true.")
 					init_app=false;
 				}
 				if(!init_app)
 				{
-					LOG_DEBUG("Application not initialized.")
+					LOG_ERROR("Application not initialized.")
 					return;
 				}
 				synchronize_fps=true; //默认开启帧率同步
@@ -180,9 +180,9 @@ namespace andromeda {
 				window.setWindowMouseEventPassthrough(passthrough);
 			}
 
-			__attribute__((always_inline)) inline bool setWindowFramebufferTransparent(bool transparent) //preinitialize()中调用。设置窗口渲染的背景是否透明。注意即使内容透明，事件依旧不会穿透窗口透明部分，它们会被窗口捕获
+			__attribute__((always_inline)) inline void setWindowFramebufferTransparent(bool transparent) //preinitialize()中调用。设置窗口渲染的背景是否透明。注意即使内容透明，事件依旧不会穿透窗口透明部分，它们会被窗口捕获
 			{
-				return window.setWindowFramebufferTransparent(transparent); //设置成功则返回true
+				window.setWindowFramebufferTransparent(transparent);
 			}
 		};
 	}

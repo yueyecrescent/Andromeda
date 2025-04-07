@@ -16,6 +16,13 @@ namespace andromeda {
 
 		public:
 			RenderSys();
+
+			static int screenWidth;
+			static int screenHeight;
+
+			static void initProperties();
+
+			static void getScreenResolution(int* widthPtr,int* heightPtr);
 		};
 	}
 }

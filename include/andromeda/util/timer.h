@@ -27,7 +27,7 @@ namespace andromeda {
 			LimitCounter<size_t>interval_idx_counter;
 			ArrayList<long long int>intervals;
 		public:
-			std::function<void(size_t&)> callback;
+			std::function<void(float,size_t&,size_t&)> callback;
 
 			void init(); //初始化调用，只调用一次。再次调用则相当于重置时钟回归成第一次调用init()后的状态
 			void calc(); //在主循环里执行更新操作完毕后调用，计算距离上次调用该函数（或init()调用后）经过的时间delta_t，到达时间间隔后将回调

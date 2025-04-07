@@ -1,8 +1,8 @@
 #ifndef ANDROMEDA_MEDIA_AUDIOFACTORY
 #define ANDROMEDA_MEDIA_AUDIOFACTORY
 
-#include <avcodec/libavcodec/avcodec.h>
-#include <avcodec/libavformat/avformat.h>
+#include <ffmpeg/libavcodec/avcodec.h>
+#include <ffmpeg/libavformat/avformat.h>
 
 #include "audio_process.h"
 #include "pcm_audio.h"

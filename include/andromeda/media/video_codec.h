@@ -2,8 +2,8 @@
 #define ANDROMEDA_MEDIA_VIDEOCODEC
 
 #include <fstream>
-#include <avcodec/libavcodec/avcodec.h>
-#include <avcodec/libavformat/avformat.h>
+#include <ffmpeg/libavcodec/avcodec.h>
+#include <ffmpeg/libavformat/avformat.h>
 
 #include "raster_image.h"
 

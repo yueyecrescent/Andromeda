@@ -19,7 +19,7 @@ namespace andromeda {
 
 		public:
 			Window()=default; //该构造函数不会实际初始化窗口仅分配内存，需要重新调用其他构造函数以正常工作
-			Window(const char *title,int width=800,int height=600,andromeda::graphics::ColorRGBA backColor_={0,0,0,0},bool isfullscreen=false,GLFWmonitor *monitor_=glfwGetPrimaryMonitor());
+			Window(const char* title,int width=800,int height=600,andromeda::graphics::ColorRGBA backColor_={0,0,0,0},bool isfullscreen=false,GLFWmonitor* monitor_=glfwGetPrimaryMonitor());
 
 			inline operator GLFWwindow*()
 			{
@@ -76,7 +76,7 @@ namespace andromeda {
 				return *this;
 			}
 
-			inline Window& setMonitor(GLFWmonitor *monitor)
+			inline Window& setMonitor(GLFWmonitor* monitor)
 			{
 				this->monitor=monitor;
 				const GLFWvidmode* mode=glfwGetVideoMode(monitor);
@@ -98,10 +98,14 @@ namespace andromeda {
 				return glfwGetWindowAttrib(window_id,GLFW_FLOATING); //设置成功则返回true
 			}
 
-			inline bool setWindowFramebufferTransparent(bool transparent=false) //设置窗口渲染的背景是否透明。注意即使内容透明，事件依旧不会穿透窗口透明部分，它们会被窗口捕获
+			inline void setWindowFramebufferTransparent(bool transparent=false) //设置窗口渲染的背景是否透明。注意即使背景透明，事件依旧不会穿透窗口透明部分，它们会被窗口捕获
 			{
 				glfwWindowHint(GLFW_TRANSPARENT_FRAMEBUFFER,transparent);
-				return glfwGetWindowAttrib(window_id,GLFW_TRANSPARENT_FRAMEBUFFER); //设置成功则返回true
+			}
+
+			inline bool isWindowFramebufferTransparent()
+			{
+				return glfwGetWindowAttrib(window_id,GLFW_TRANSPARENT_FRAMEBUFFER);
 			}
 
 			inline float setWindowOpacity(float opacity=1) //窗口整体的透明度设置，位于0-1间
@@ -111,7 +115,7 @@ namespace andromeda {
 			}
 
 #ifdef GLFW_MOUSE_PASSTHROUGH
-			inline void setWindowMouseEventPassthrough(bool passthrough) //设置窗口鼠标事件是否穿透，glfw3.4版本及以上可用
+			inline void setWindowMouseEventPassthrough(bool passthrough) //设置窗口鼠标事件是否穿透，glfw3.4版本及以上可用，整个窗口均会鼠标事件穿透
 			{
 				glfwWindowHint(GLFW_MOUSE_PASSTHROUGH,passthrough);
 			}

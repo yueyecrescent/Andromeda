@@ -32,7 +32,7 @@ CompactSpriteSheet::CompactSpriteSheet(Texture2D texture,const char* split_file,
 		float y=split_info.GetCell<float>(*(info_names+1),idx);
 		float width=split_info.GetCell<float>(*(info_names+2),idx);
 		float height=split_info.GetCell<float>(*(info_names+3),idx);
-		SpriteUvCoord area;
+		UvCoord area;
 		coord_transform(x,y,x+width,y+height,area.u1,area.v1,area.u2,area.v2,mode==PIXEL_COORD?&texture:nullptr);
 		splited_area.add(area);
 	}

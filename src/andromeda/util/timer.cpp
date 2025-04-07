@@ -20,6 +20,6 @@ void Timer::calc()
 		++interval_idx_counter;
 		++counter;
 		if(callback)
-			callback(counter);
+			callback(interval,counter,interval_idx_counter);
 	}
 }

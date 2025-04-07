@@ -7,7 +7,9 @@ namespace andromeda {
 
 		typedef void (*AreaCoordTransform)(float,float,float,float,float&,float&,float&,float&,Texture2D*);
 
-		//若texture为nullptr则传入坐标必须归一化
+		/*GUI坐标系转换为UV坐标系
+		 * 若texture为nullptr则传入坐标必须归一化
+		 */
 		void gui2uv(float input_x1,float input_y1,float input_x2,float input_y2,float& output_x1,float& output_y1,float& output_x2,float& output_y2,Texture2D* texture=nullptr);
 	}
 }

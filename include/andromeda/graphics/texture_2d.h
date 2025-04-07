@@ -6,14 +6,44 @@
 
 namespace andromeda {
 	namespace graphics {
-		enum struct TextureType//材质类型，与aiTextureType保持一致
+		enum struct TextureType //材质类型，与aiTextureType保持一致
 		{
-			NONE=0,//无贴图
-			COLOR_MAP=1,DIFFUSE_MAP=1,SPECULAR_MAP,AMBIENT_MAP,EMISSIVE_MAP,HEIGHT_MAP,NORMAL_MAP,SHININESS_MAP,OPACITY_MAP,DISPLACEMENT_MAP,LIGHT_MAP,REFLECTION,//通用贴图
-			BASE_COLOR_MAP=12,NORMAL_CAMERA_MAP,EMISSION_COLOR_MAP,METALNESS_MAP,DIFFUSE_ROUGHNESS_MAP,AMBIENT_OCCLUSION_MAP,//PBR贴图
-			UNKNOWN=18,//未知贴图
-			SHEEN_MAP=19,CLEARCOAT_MAP,TRANSMISSION_MAP
+			NONE=0, //无贴图
+			COLOR_MAP=1,
+			DIFFUSE_MAP=1,
+			SPECULAR_MAP,
+			AMBIENT_MAP,
+			EMISSIVE_MAP,
+			HEIGHT_MAP,
+			NORMAL_MAP,
+			SHININESS_MAP,
+			OPACITY_MAP,
+			DISPLACEMENT_MAP,
+			LIGHT_MAP,
+			REFLECTION, //通用贴图
+			BASE_COLOR_MAP=12,
+			NORMAL_CAMERA_MAP,
+			EMISSION_COLOR_MAP,
+			METALNESS_MAP,
+			DIFFUSE_ROUGHNESS_MAP,
+			AMBIENT_OCCLUSION_MAP, //PBR贴图
+			UNKNOWN=18, //未知贴图
+			SHEEN_MAP=19,
+			CLEARCOAT_MAP,
+			TRANSMISSION_MAP
 		};
+
+		//UV坐标，左下角为原点，向上向右为正
+		typedef struct UvCoord
+		{
+			float u1,v1,u2,v2; //uv1为左下角，uv2为右上角
+		} UvCoord;
+
+		//像素坐标，左上角为原点，向右向下为正
+		typedef struct PixelCoord
+		{
+			int x1,y1,x2,y2; //uv1为左下角，uv2为右上角
+		} PixelCoord;
 
 		TextureType parseTextureType(const char* type);
 
@@ -32,18 +62,18 @@ namespace andromeda {
 			}
 
 			__attribute__((always_inline)) inline Texture2D(GLuint exist_texture_id,TextureType type=TextureType::UNKNOWN) :
-					texture_id(exist_texture_id),texture_type(type)
+					texture_id(exist_texture_id), texture_type(type)
 			{
 			}
 
 			__attribute__((always_inline)) inline Texture2D()=default;
 
 			Texture2D(andromeda::media::RasterImage img,TextureType type=TextureType::UNKNOWN) :
-					image(img),texture_type(type)
+					image(img), texture_type(type)
 			{
 			}
 
-			Texture2D(const char* img_path,TextureType type=TextureType::UNKNOWN):
+			Texture2D(const char* img_path,TextureType type=TextureType::UNKNOWN) :
 					texture_type(type)
 			{
 				setImage(img_path);
@@ -92,7 +122,7 @@ namespace andromeda {
 				image.release();
 			}
 
-			__attribute__((always_inline))     inline Texture2D& setParameter(GLint para_name,GLint para_value) //设置之前先调用use()
+			__attribute__((always_inline)) inline Texture2D& setParameter(GLint para_name,GLint para_value) //设置之前先调用use()
 			{
 				glTexParameteri(GL_TEXTURE_2D,para_name,para_value);
 				return *this;

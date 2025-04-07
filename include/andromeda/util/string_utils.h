@@ -17,19 +17,15 @@ namespace andromeda {
 			using ArrayList<const char*>::release;
 			SplitStrings()=default;
 		public:
-			~SplitStrings()
-			{
-				release();
-			}
+			~SplitStrings()=default;
 		};
 
 		void packBitsToBytes(unsigned char* bits,int bits_start_pos,unsigned char* bytes,int bytes_start_pos,long int bits_length);
 
 		bool parseBool(const char* value); //当value为"true"时返回true，其他时候返回false
 
-
 		const char* str_cpy(const char* str); //拷贝字符串
-		const char* str_arr_join(const char** str_arr,int count);//把含有count个字符串的数组合并为一个字符串
+		const char* str_arr_join(const char** str_arr,int count); //把含有count个字符串的数组合并为一个字符串
 
 		const char* str_join(const char* str1,const char* str2);
 
@@ -52,13 +48,13 @@ namespace andromeda {
 		}
 
 		template<typename T>
-		__attribute__((always_inline)) inline void* memasgn(void* ptr,T &&value) //浅拷贝对象到给定指针
+		__attribute__((always_inline)) inline void* memasgn(void* ptr,T&& value) //浅拷贝对象到给定指针
 		{
 			return memcpy(ptr,&value,sizeof(T));
 		}
 
 		template<typename T>
-		__attribute__((always_inline)) void* memasgn(void* ptr,T &value)
+		__attribute__((always_inline)) void* memasgn(void* ptr,T& value)
 		{
 			return memcpy(ptr,&value,sizeof(T));
 		}

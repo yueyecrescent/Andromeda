@@ -26,7 +26,7 @@ namespace andromeda {
 			friend class Renderable;
 		private:
 			andromeda::math::Matrix4x4f model_matrix=andromeda::math::Matrix4x4f::identity(); //变换数据
-			andromeda::util::ArrayList<unsigned char> instance_divisor_data; //自定义数据
+			andromeda::util::ArrayList<unsigned char> instance_divisor_data; //自定义数据，以字节为单位
 		public:
 			RenderableInstance()=default;
 
@@ -61,13 +61,13 @@ namespace andromeda {
 			}
 
 			inline void appendDivisorData(void* data,size_t size)
+
 			{
 				instance_divisor_data.add((unsigned char*)data,size);
 			}
 		};
 
-		/*
-		 * 绘制策略为NONE则不绘制；NORMAL表示普通绘制，INSTANCED表示实例化绘制
+		/* 绘制策略为NONE则不绘制；NORMAL表示普通绘制，INSTANCED表示实例化绘制
 		 * 普通绘制只会绘制一个物体，这个物体由vertex_data和element_data定义
 		 * 实例化绘制将以普通绘制的物体为模板，每个实例有自己的divisor数据，这部分数据添加在vertex_data全部顶点数据的后面
 		 */
@@ -88,7 +88,7 @@ namespace andromeda {
 
 		/* 最小可渲染对象，该对象作为一个整体渲染。更复杂的物体可能由多个部件组合而成，这种情况应该使用RenderableModel
 		 * 只包含渲染物体本身的信息（顶点数据、着色器、纹理等），不包括位置、变换等（这些属于实例的信息，不同实例可以共享同一个Renderable对象），等价于Mesh
-		 * */
+		 */
 		class Renderable
 		{
 		private:
@@ -180,10 +180,12 @@ namespace andromeda {
 				}
 					break;
 				case DrawStrategy::NORMAL:
+				{
 					if(ebo)
 						glDrawElements((GLuint)geo_strategy,getElementCount(),GL_UNSIGNED_INT,0);
 					else
 						glDrawArrays((GLuint)geo_strategy,0,getVertexCount());
+				}
 					break;
 				}
 			}

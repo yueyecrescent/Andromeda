@@ -1,8 +1,8 @@
 #ifndef ANDROMEDA_MEDIA_MUXER
 #define ANDROMEDA_MEDIA_MUXER
 
-#include <avcodec/libavcodec/avcodec.h>
-#include <avcodec/libavformat/avformat.h>
+#include <ffmpeg/libavcodec/avcodec.h>
+#include <ffmpeg/libavformat/avformat.h>
 
 #include "video_codec.h"
 #include "audio_codec.h"
