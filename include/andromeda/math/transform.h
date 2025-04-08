@@ -7,6 +7,16 @@
 #include "matrix.h"
 #include "quaternion.h"
 
+#ifdef far
+#undef far
+#define __SHADOWED_DEF_MARK_far
+#endif
+
+#ifdef near
+#undef near
+#define __SHADOWED_DEF_MARK_near
+#endif
+
 //采用右手坐标系
 namespace andromeda {
 	namespace math {
@@ -102,10 +112,9 @@ namespace andromeda {
 
 		//OpenGL的投影矩阵。NDC为左手坐标系，世界坐标系为右手坐标系，near和far应该取负数，向z轴负方向看去
 		template<typename T=float>
-		inline Matrix4x4<T> frustum(T near,T far,T fov,T left,T right,T top,T bottom)
+		inline Matrix4x4<T>frustum(T near,T far,T fov,T left,T right,T top,T bottom)
 		{
-			T m_elem[]=
-			{
+			T m_elem[]={
 				2*near/(right-left),0,(right+left)/(right-left),0,
 				0,2*near/(top-bottom),(top+bottom)/(top-bottom),0,
 				0,0,-(far+near)/(far-near),-2*near*far/(far-near),
@@ -118,8 +127,7 @@ namespace andromeda {
 		template<typename T=float>
 		inline Matrix4x4<T> frustum(T znear,T zfar,T fov,T aspect_ratio)
 		{
-			T m_elem[]=
-			{
+			T m_elem[]={
 				1/(tan(fov/2)*aspect_ratio),0,0,0,
 				0,1/tan(fov/2),0,0,
 				0,0,-(zfar+znear)/(zfar-znear),-2*znear*zfar/(zfar-znear),
@@ -129,5 +137,15 @@ namespace andromeda {
 		}
 	}
 }
+
+#ifdef __SHADOWED_DEF_MARK_far
+#define far
+#undef __SHADOWED_DEF_MARK_far
+#endif
+
+#ifdef __SHADOWED_DEF_MARK_near
+#define near
+#undef __SHADOWED_DEF_MARK_near
+#endif
 
 #endif//ANDROMEDA_MATH_TRANSFORM

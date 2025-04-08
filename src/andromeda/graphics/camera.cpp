@@ -2,6 +2,16 @@
 
 #include <andromeda/math/transform.h>
 
+#ifdef far
+#undef far
+#define __SHADOWED_DEF_MARK_far
+#endif
+
+#ifdef near
+#undef near
+#define __SHADOWED_DEF_MARK_near
+#endif
+
 using namespace andromeda::graphics;
 using namespace andromeda::math;
 
@@ -19,3 +29,13 @@ Matrix4x4f Camera::calcViewProjectionMatrix()
 	pv_mat=pv_mat*projection;
 	return pv_mat;
 }
+
+#ifdef __SHADOWED_DEF_MARK_far
+#define far
+#undef __SHADOWED_DEF_MARK_far
+#endif
+
+#ifdef __SHADOWED_DEF_MARK_near
+#define near
+#undef __SHADOWED_DEF_MARK_near
+#endif

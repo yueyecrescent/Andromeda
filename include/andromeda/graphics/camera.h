@@ -7,6 +7,17 @@
 #include "framebuffer.h"
 #include "../app/window.h"
 
+//变量名与minwindef.h中的宏冲突
+#ifdef far
+#undef far
+#define __SHADOWED_DEF_MARK_far
+#endif
+
+#ifdef near
+#undef near
+#define __SHADOWED_DEF_MARK_near
+#endif
+
 namespace andromeda {
 	namespace graphics {
 		class Camera
@@ -24,7 +35,7 @@ namespace andromeda {
 			float yaw=0,pitch=0,roll=0;
 			Framebuffer* framebuffer=nullptr;
 
-			Camera(float znear=0.1,float zfar=100,float fov=1.0f,float aspect_ratio=1920/1080,Framebuffer *buffer=nullptr);
+			Camera(float znear=0.1,float zfar=100,float fov=1.0f,float aspect_ratio=1920/1080,Framebuffer* buffer=nullptr);
 
 			andromeda::math::Matrix4x4f calcViewProjectionMatrix();
 
@@ -61,7 +72,7 @@ namespace andromeda {
 				return *this;
 			}
 
-			inline Camera& setAspectRatio(andromeda::app::Window *window)
+			inline Camera& setAspectRatio(andromeda::app::Window* window)
 			{
 				this->aspect_ratio=(float)(window->getHeight())/window->getWidth();
 				projection=andromeda::math::frustum(near,far,fov,aspect_ratio);
@@ -90,5 +101,15 @@ namespace andromeda {
 		};
 	}
 }
+
+#ifdef __SHADOWED_DEF_MARK_far
+#define far
+#undef __SHADOWED_DEF_MARK_far
+#endif
+
+#ifdef __SHADOWED_DEF_MARK_near
+#define near
+#undef __SHADOWED_DEF_MARK_near
+#endif
 
 #endif//ANDROMEDA_GRAPHICS_CAMERA

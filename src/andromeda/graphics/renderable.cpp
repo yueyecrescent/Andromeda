@@ -1,5 +1,7 @@
 #include <andromeda/graphics/renderable.h>
 
+#include <andromeda/graphics/internal_shaders.h>
+
 using namespace andromeda::graphics;
 using namespace andromeda::math;
 using namespace andromeda::util;
@@ -7,7 +9,7 @@ using namespace andromeda::util;
 Renderable::Renderable() :
 		direct_instance_list(DIRECT_INSTANCE_CAPCITY), vertex_data(1024), element_data(1024), textures(Texture2D::getMaxTextureUnit()), instance_divisor_data(1024)
 {
-	setDrawStrategy(DrawStrategy::NORMAL,&VertexAttribute::getDefaultPTVertexAttributes(),&ShaderProgram::getPTDefaultShaderProgram());
+	setDrawStrategy(DrawStrategy::NORMAL,&VertexAttribute::getDefaultPTVertexAttributes(),&getPTDefaultShaderProgram());
 }
 
 RenderableInstance& Renderable::instance(std::string id)

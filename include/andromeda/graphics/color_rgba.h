@@ -87,6 +87,16 @@ namespace andromeda {
 			{
 				return (r*weight_r+g*weight_g+b*weight_b)/3.0;
 			}
+
+			static ColorRGBA WHITE;
+			static ColorRGBA BLACK;
+			static ColorRGBA RED;
+			static ColorRGBA GREEN;
+			static ColorRGBA BLUE;
+			static ColorRGBA YELLOW;
+			static ColorRGBA PURPLE;
+			static ColorRGBA CYAN;
+			static ColorRGBA TRANSPARENT_BLACK;
 		};
 
 		class ColorRGBAVector
@@ -172,6 +182,16 @@ namespace andromeda {
 				b*=f;
 				return *this;
 			}
+
+			static Pixel WHITE;
+			static Pixel BLACK;
+			static Pixel RED;
+			static Pixel GREEN;
+			static Pixel BLUE;
+			static Pixel YELLOW;
+			static Pixel PURPLE;
+			static Pixel CYAN;
+			static Pixel TRANSPARENT_BLACK;
 		};
 	}
 }

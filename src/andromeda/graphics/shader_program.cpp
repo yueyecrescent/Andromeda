@@ -1,6 +1,5 @@
 #include <andromeda/graphics/shader_program.h>
 
-#include <andromeda/graphics/vertex_attribute.h>
 #include <andromeda/util/log.h>
 
 using namespace andromeda::graphics;
@@ -90,7 +89,7 @@ bool ShaderProgram::setVertexShader(GLuint vertex_shader)
 
 bool ShaderProgram::setFragmentShader(GLuint fragment_shader)
 {
-	bool shader_compiled=checkFragmentShader();
+	bool shader_compiled=checkFragmentShader(fragment_shader);
 	if(shader_compiled)
 	{
 		glDeleteShader(this->fragment_shader);
@@ -144,7 +143,9 @@ GLuint ShaderProgram::use_ret()
 void ShaderProgram::releaseShader()
 {
 	glDeleteShader(vertex_shader);
+	vertex_shader=0;
 	glDeleteShader(fragment_shader);
+	fragment_shader=0;
 }
 
 void ShaderProgram::setInt(const char* name,int value)
@@ -222,79 +223,4 @@ void ShaderProgram::setMatrix3x3f(const char* name,Matrix3x3f* mat3,bool transpo
 	GLuint last_shader_program=use_ret(); //使用glUniform*更新变量值之前必须使用该着色器
 	glUniformMatrix3fv(glGetUniformLocation(shader_program,name),1,transpose,(const GLfloat*)mat3);
 	glUseProgram(last_shader_program);
-}
-
-namespace andromeda {
-	namespace graphics {
-		//传递顶点着色器
-		const char* pct_pass_vertex_shader="#version 330 core\n"
-										"layout (location=0) in vec3 " VERTEX_ATTRIB_NAME_POSITION ";\n"
-										"layout (location=1) in vec4 " VERTEX_ATTRIB_NAME_COLOR ";\n"
-										"layout (location=2) in vec2 " VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-										"out vec4 vertex_" VERTEX_ATTRIB_NAME_COLOR ";\n"
-										"out vec2 vertex_" VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-										"void main()\n"
-										"{\n"
-										"	gl_Position=vec4(" VERTEX_ATTRIB_NAME_POSITION ",1.0);\n"
-										"	vertex_" VERTEX_ATTRIB_NAME_COLOR "=" VERTEX_ATTRIB_NAME_COLOR ";\n"
-										"	vertex_" VERTEX_ATTRIB_NAME_TEXCOORD "=" VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-										"}";
-
-		const char* pct_pass_vertex_instanced_shader="#version 330 core\n"
-										"layout (location=0) in vec3 " VERTEX_ATTRIB_NAME_POSITION ";\n"
-										"layout (location=1) in vec4 " VERTEX_ATTRIB_NAME_COLOR ";\n"
-										"layout (location=2) in vec2 " VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-										"layout (location=3) in mat4 " VERTEX_ATTRIB_NAME_MODEL_MATRIX ";\n"
-										"out vec4 vertex_" VERTEX_ATTRIB_NAME_COLOR ";\n"
-										"out vec2 vertex_" VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-										"void main()\n"
-										"{\n"
-										"	gl_Position=" VERTEX_ATTRIB_NAME_MODEL_MATRIX "*vec4(" VERTEX_ATTRIB_NAME_POSITION ",1.0);\n"
-										"	vertex_" VERTEX_ATTRIB_NAME_COLOR "=" VERTEX_ATTRIB_NAME_COLOR ";\n"
-										"	vertex_" VERTEX_ATTRIB_NAME_TEXCOORD "=" VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-										"}";
-
-		//默认片段着色器
-		const char* pct_default_fragment_shader="#version 330 core\n"
-											"in vec4 vertex_" VERTEX_ATTRIB_NAME_COLOR ";\n"
-											"in vec2 vertex_" VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-											"out vec4 fragment_color;\n"
-											"uniform sampler2D texture_2d;\n"
-											"void main()\n"
-											"{\n"
-											"	fragment_color=texture(texture_2d,vertex_" VERTEX_ATTRIB_NAME_TEXCOORD ")*vertex_" VERTEX_ATTRIB_NAME_COLOR ";\n"
-											"}";
-
-		//Framebuffer传递顶点着色器
-		const char* pt_pass_vertex_shader="#version 330 core\n"
-										"layout (location=0) in vec3 " VERTEX_ATTRIB_NAME_POSITION ";\n"
-										"layout (location=1) in vec2 " VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-										"out vec2 vertex_" VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-										"void main()\n"
-										"{\n"
-										"	gl_Position=vec4(" VERTEX_ATTRIB_NAME_POSITION ",1.0);\n"
-										"	vertex_" VERTEX_ATTRIB_NAME_TEXCOORD "=" VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-										"}";
-
-		const char* pt_pass_vertex_instanced_shader="#version 330 core\n"
-										"layout (location=0) in vec3 " VERTEX_ATTRIB_NAME_POSITION ";\n"
-										"layout (location=1) in vec2 " VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-										"layout (location=2) in mat4 " VERTEX_ATTRIB_NAME_MODEL_MATRIX ";\n"
-										"out vec2 vertex_" VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-										"void main()\n"
-										"{\n"
-										"	gl_Position=" VERTEX_ATTRIB_NAME_MODEL_MATRIX "*vec4(" VERTEX_ATTRIB_NAME_POSITION ",1.0);\n"
-										"	vertex_" VERTEX_ATTRIB_NAME_TEXCOORD "=" VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-										"}";
-
-		//Framebuffer默认片段着色器
-		const char* pt_default_fragment_shader="#version 330 core\n"
-											"in vec2 vertex_" VERTEX_ATTRIB_NAME_TEXCOORD ";\n"
-											"out vec4 fragment_color;\n"
-											"uniform sampler2D texture_2d;\n"
-											"void main()\n"
-											"{\n"
-											"	fragment_color=texture(texture_2d,vertex_" VERTEX_ATTRIB_NAME_TEXCOORD ");\n"
-											"}";
-	}
 }

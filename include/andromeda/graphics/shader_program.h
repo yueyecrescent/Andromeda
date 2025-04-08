@@ -8,13 +8,6 @@
 
 namespace andromeda {
 	namespace graphics {
-		extern const char* pct_pass_vertex_shader;
-		extern const char* pct_pass_vertex_instanced_shader;
-		extern const char* pct_default_fragment_shader;
-		extern const char* pt_pass_vertex_shader;
-		extern const char* pt_pass_vertex_instanced_shader;
-		extern const char* pt_default_fragment_shader;
-
 		class ShaderProgram
 		{
 		private:
@@ -23,16 +16,16 @@ namespace andromeda {
 			const char* fragment_shader_source=nullptr;
 			ShaderProgram(GLuint shader_program);
 			ShaderProgram(GLuint shader_program,GLuint vertex_shader,GLuint fragment_shader);
-		public:
+			public:
 			operator GLuint()
 			{
 				return shader_program;
 			}
 
-			ShaderProgram(const char* vertex_shader_source=pct_pass_vertex_shader,const char* fragment_shader_source=pct_default_fragment_shader);
+			ShaderProgram(const char* vertex_shader_source,const char* fragment_shader_source);
 			//编译、链接失败则不改变shader_program,vertex_shader,fragment_shader的值
-			bool setVertexShader(const char* vertex_shader_source=pct_pass_vertex_shader); //当着色器都编译完成后将自动链接，返回值为当前程序状态，true表示无错误，false表示有错误不可用（编译错误或链接错误）
-			bool setFragmentShader(const char* fragment_shader_source=pct_default_fragment_shader);
+			bool setVertexShader(const char* vertex_shader_source); //当着色器都编译完成后将自动链接，返回值为当前程序状态，true表示无错误，false表示有错误不可用（编译错误或链接错误）
+			bool setFragmentShader(const char* fragment_shader_source);
 			bool setVertexShader(GLuint vertex_shader); //设置已经编译好的着色器，如果checkVertexShader()返回false说明着色器实际上有错，则该函数返回false。程序链接失败也返回false
 			bool setFragmentShader(GLuint fragment_shader);
 			bool linkProgram(bool release_shader=true); //通常不需要调用，可以自动链接，成功则返回true。release_shader决定如果链接成功是否释放已经编译的着色器资源，默认释放资源
@@ -51,9 +44,19 @@ namespace andromeda {
 				return checkShader(andromeda::util::str_join("Vertex Shader:\n",program.vertex_shader_source),program.vertex_shader,print_log);
 			}
 
+			static bool checkVertexShader(GLuint shader,bool print_log=true)
+			{
+				return checkShader(andromeda::util::str_join("Vertex Shader:\n",shader),shader,print_log);
+			}
+
 			static bool checkFragmentShader(ShaderProgram& program,bool print_log=true) //成功则返回true
 			{
 				return checkShader(andromeda::util::str_join("Fragment Shader:\n",program.fragment_shader_source),program.fragment_shader,print_log);
+			}
+
+			static bool checkFragmentShader(GLuint shader,bool print_log=true)
+			{
+				return checkShader(andromeda::util::str_join("Fragment Shader:\n",shader),shader,print_log);
 			}
 
 			static bool checkShaderProgram(GLuint shader_program,bool print_log=true); //成功则返回true
@@ -71,30 +74,6 @@ namespace andromeda {
 			__attribute__((always_inline)) inline bool checkShaderProgram(bool print_log=true) //成功则返回true
 			{
 				return checkShaderProgram(shader_program,print_log);
-			}
-
-			__attribute__((always_inline))  static inline ShaderProgram& getPCTDefaultShaderProgram() //获取默认着色程序
-			{
-				static ShaderProgram pct_default_shader_program=ShaderProgram(pct_pass_vertex_shader,pct_default_fragment_shader);
-				return pct_default_shader_program;
-			}
-
-			__attribute__((always_inline))  static inline ShaderProgram& getPTDefaultShaderProgram() //获取默认实例化绘制着色程序
-			{
-				static ShaderProgram pt_default_shader_program=ShaderProgram(pt_pass_vertex_shader,pt_default_fragment_shader);
-				return pt_default_shader_program;
-			}
-
-			__attribute__((always_inline))  static inline ShaderProgram& getPCTIDefaultShaderProgram() //获取默认着色程序
-			{
-				static ShaderProgram pct_default_instanced_shader_program=ShaderProgram(pct_pass_vertex_instanced_shader,pct_default_fragment_shader);
-				return pct_default_instanced_shader_program;
-			}
-
-			__attribute__((always_inline))  static inline ShaderProgram& getPTIDefaultShaderProgram() //获取默认实例化绘制着色程序
-			{
-				static ShaderProgram pt_default_instanced_shader_program=ShaderProgram(pt_pass_vertex_instanced_shader,pt_default_fragment_shader);
-				return pt_default_instanced_shader_program;
 			}
 
 			//适用于偶尔设置变量值（glGetUniformLocation查询代价高昂避免循环调用！），设置前后不改变当前着色器程序
@@ -116,7 +95,7 @@ namespace andromeda {
 			private:
 				GLuint shader_program;
 				GLint var_loc;
-			public:
+				public:
 				operator GLint()
 				{
 					return var_loc;

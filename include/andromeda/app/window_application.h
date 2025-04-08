@@ -24,14 +24,13 @@ namespace andromeda {
 
 	namespace app {
 		template<typename Derived>
-		class WindowApplication:public andromeda::app::Application<Derived>
+		class WindowApplication:public Window,public andromeda::app::Application<Derived>
 		{
 			DefineApplication(Derived)
 		private:
 			using andromeda::app::Application<Derived>::is_running;
 			using andromeda::app::Application<Derived>::synchronize_fps;
 			using andromeda::app::Application<Derived>::main_loop_thread;
-			Window window;
 			FrameRate render_frame_rate; //渲染循环计数器
 			andromeda::graphics::Framebuffer framebuffer; //双缓冲
 			int render_fps_limit=-1;
@@ -48,6 +47,8 @@ namespace andromeda {
 			RenderSys render_sys;
 
 		public:
+			ImportApplicationAPI(Derived)
+
 			WindowApplication(const char* window_title=nullptr,int width=800,int height=600,andromeda::graphics::ColorRGBA backColor_={0,0,0,0},bool isfullscreen=false,GLFWmonitor* monitor_=glfwGetPrimaryMonitor())
 			{
 				bool init_app=true; //如果需要的库没有加载，则不初始化该类，无法使用该类
@@ -69,8 +70,8 @@ namespace andromeda {
 				synchronize_fps=true; //默认开启帧率同步
 				_preinitialize(); //可以调用glfwWindowHint()，不可设置窗口参数、调用OpenGL函数，否则空指针异常
 				glfwWindowHint(GLFW_DOUBLEBUFFER,GLFW_TRUE);
-				new (&window) Window(window_title?window_title:"Andromeda Application",width,height,backColor_,isfullscreen,monitor_); //初始化window
-				glfwMakeContextCurrent(window);
+				new (this) Window(window_title?window_title:"Andromeda Application",width,height,backColor_,isfullscreen,monitor_); //初始化window
+				glfwMakeContextCurrent(*this);
 				_load_opengl(); //GLAD的加载要在glfwMakeContextCurrent()之后进行
 				new (&framebuffer) andromeda::graphics::Framebuffer(width,height,backColor_);
 				framebuffer.alloc();
@@ -79,18 +80,20 @@ namespace andromeda {
 
 			~WindowApplication()
 			{
-				glfwDestroyWindow(window);
+				glfwDestroyWindow(*this);
 			}
 
 			__attribute__((always_inline)) inline operator Window*()
 			{
-				return &window;
+				return this;
 			}
+
+			using Window::operator GLFWwindow*;
 
 			__attribute__((always_inline)) inline void _launchMainLoop()
 			{
 				render_frame_rate.init();
-				while(is_running&&(!glfwWindowShouldClose(window)))
+				while(is_running&&(!glfwWindowShouldClose(*this)))
 				{
 					//输入处理
 					glfwPollEvents();
@@ -103,7 +106,7 @@ namespace andromeda {
 					if(andromeda::traits::is_class<Derived>::result&&has_func(render_update)<void,float>::check<Derived>::result) //如果子类没有render_update()则此调用将优化掉
 						_render_update(render_frame_rate.get_tpf());
 					framebuffer.blitToScreen();
-					glfwSwapBuffers(window);
+					glfwSwapBuffers(*this);
 					render_frame_rate.calc();
 				}
 			}
@@ -144,46 +147,35 @@ namespace andromeda {
 			using Application<Derived>::getUpdateRate;
 			using Application<Derived>::getUpdateRateCount; //获取当前所在帧
 
-			__attribute__((always_inline)) inline int getWindowHeight(void)
-			{
-				return window.getHeight();
-			}
+			using Window::setBackColor;
+			using Window::getBackColor;
+			using Window::getHeight;
+			using Window::getWidth;
 
-			__attribute__((always_inline)) inline int getWindowWidth(void)
-			{
-				return window.getWidth();
-			}
+			using Window::isWindowFullScreen;
+			using Window::setFullScreen;
+			using Window::setVisible;
+			using Window::setWindowed;
+			using Window::setMonitor;
+			using Window::setWindowSize;
+			using Window::setIsAlwaysOnTop;
+			using Window::setWindowFramebufferTransparent;
+			using Window::isWindowFramebufferTransparent;
+			using Window::setWindowFramebufferResizable;
 
-			__attribute__((always_inline)) inline bool isFullScreen(void)
-			{
-				return window.isWindowFullScreen();
-			}
-
-			__attribute__((always_inline)) inline void setFullScreen(bool isFullScreen)
-			{
-				window.setFullScreen(isFullScreen);
-			}
-
-			__attribute__((always_inline)) inline void setWindowSize(int width,int height)
-			{
-				window.setWindowSize(width,height);
-			}
-
-			__attribute__((always_inline)) inline void setBackColor(andromeda::graphics::ColorRGBA color)
-			{
-				window.setBackColor(color);
-				framebuffer.setClearColor(color);
-			}
-
-			__attribute__((always_inline)) inline void setWindowMouseEventPassthrough(bool passthrough) //preinitialize()中调用。窗口是否鼠标事件穿透
-			{
-				window.setWindowMouseEventPassthrough(passthrough);
-			}
-
-			__attribute__((always_inline)) inline void setWindowFramebufferTransparent(bool transparent) //preinitialize()中调用。设置窗口渲染的背景是否透明。注意即使内容透明，事件依旧不会穿透窗口透明部分，它们会被窗口捕获
-			{
-				window.setWindowFramebufferTransparent(transparent);
-			}
+			using Window::isWindowFramebufferResizable;
+			using Window::setWindowInitiallyVisible;
+			using Window::isWindowInitiallyVisible;
+			using Window::setWindowInitiallyFocused;
+			using Window::isWindowInitiallyFocused;
+			using Window::setWindowDecorated;
+			using Window::isWindowDecorated;
+			using Window::setWindowOpacity;
+#ifdef GLFW_MOUSE_PASSTHROUGH
+			using Window::setWindowMouseEventPassthrough;
+			using Window::isWindowMouseEventPassthrough;
+#endif
+			using Window::setWindowTransparentColor;
 		};
 	}
 }

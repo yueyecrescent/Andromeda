@@ -1,8 +1,29 @@
 #include <andromeda/graphics/color_rgba.h>
 
 #include <andromeda/media/raster_image.h>
+#include <andromeda/util/typedefs.h>
 
 using namespace andromeda::graphics;
+
+ColorRGBA ColorRGBA::WHITE={1.0f,1.0f,1.0f,1.0f};
+ColorRGBA ColorRGBA::BLACK={0.0f,0.0f,0.0f,1.0f};
+ColorRGBA ColorRGBA::RED={1.0f,0.0f,0.0f,1.0f};
+ColorRGBA ColorRGBA::GREEN={0.0f,1.0f,0.0f,1.0f};
+ColorRGBA ColorRGBA::BLUE={0.0f,0.0f,1.0f,1.0f};
+ColorRGBA ColorRGBA::YELLOW={1.0f,1.0f,0.0f,1.0f};
+ColorRGBA ColorRGBA::PURPLE={1.0f,0.0f,1.0f,1.0f};
+ColorRGBA ColorRGBA::CYAN={0.0f,1.0f,1.0f,1.0f};
+ColorRGBA ColorRGBA::TRANSPARENT_BLACK={0.0f,0.0f,0.0f,0.0f};
+
+Pixel Pixel::WHITE={u8(255),u8(255),u8(255),u8(255)};
+Pixel Pixel::BLACK={u8(0),u8(0),u8(0),u8(255)};
+Pixel Pixel::RED={u8(255),u8(0),u8(0),u8(255)};
+Pixel Pixel::GREEN={u8(0),u8(255),u8(0),u8(255)};
+Pixel Pixel::BLUE={u8(0),u8(0),u8(255),u8(255)};
+Pixel Pixel::YELLOW={u8(255),u8(255),u8(0),u8(255)};
+Pixel Pixel::PURPLE={u8(255),u8(0),u8(255),u8(255)};
+Pixel Pixel::CYAN={u8(0),u8(255),u8(255),u8(255)};
+Pixel Pixel::TRANSPARENT_BLACK={u8(0),u8(0),u8(0),u8(0)};
 
 ColorRGBA::ColorRGBA(const Pixel pixel) :
 		r(getChannelInt(pixel.r)), g(getChannelInt(pixel.g)), b(getChannelInt(pixel.b)), a(getChannelInt(pixel.a))

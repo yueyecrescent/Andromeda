@@ -4,20 +4,28 @@
 #include "../graphics/color_rgba.h"
 #include "window_application.h"
 
+// @formatter:off
 /**
- * 带有图形和音频的应用，可用于编写客户端
- * GLFW只能在主线程使用，因此主线程负责窗口事件及渲染
+ * 以整个桌面为渲染背景的应用
  */
+
+#define DefineTransparentFullWindowApplication(Derived) \
+	DefineApplication(Derived)\
+	friend class andromeda::app::TransparentFullWindowApplication<Derived>;\
+
+#define ImportTransparentFullWindowApplicationAPI(Derived) \
+	using andromeda::app::Application<andromeda::app::TransparentFullWindowApplication<Derived> >::launch;\
+	using andromeda::app::Application<andromeda::app::TransparentFullWindowApplication<Derived> >::exit;
 
 namespace andromeda {
 	namespace app {
 		template<typename Derived>
-		class TransparentFullWindowApplication:public andromeda::app::WindowApplication<Derived>
+		class TransparentFullWindowApplication:public andromeda::app::WindowApplication<TransparentFullWindowApplication<Derived> >
 		{
-			DefineApplication(Derived)
+			DefineApplication(TransparentFullWindowApplication<Derived>)
 		public:
 			TransparentFullWindowApplication(const char* window_title=nullptr,bool isFullScreen=false) :
-					andromeda::app::WindowApplication<Derived>(window_title,andromeda::app::RenderSys::screenWidth/2,andromeda::app::RenderSys::screenHeight/2,{0.0f,0.0f,0.0f,0.0f},isFullScreen)
+					andromeda::app::WindowApplication<TransparentFullWindowApplication<Derived> >(window_title,andromeda::app::RenderSys::screenWidth,andromeda::app::RenderSys::screenHeight,andromeda::graphics::ColorRGBA::TRANSPARENT_BLACK,isFullScreen)
 			{
 
 			}
@@ -26,28 +34,76 @@ namespace andromeda {
 
 			void preinitialize()
 			{
+				setWindowDecorated(false);
 				setWindowFramebufferTransparent(true);
+				setWindowInitiallyFocused(true);
+				((Derived*)this)->preinitialize();
 			}
 
-			using andromeda::app::WindowApplication<Derived>::operator Window*;
-			using andromeda::app::WindowApplication<Derived>::setSynchronizeFPS;
-			using andromeda::app::WindowApplication<Derived>::getRenderFPS;
-			using andromeda::app::WindowApplication<Derived>::getRenderFPSCount; //获取当前所在帧
-			using andromeda::app::WindowApplication<Derived>::setRenderFPSLimit;
-			using andromeda::app::WindowApplication<Derived>::setUpdateRateLimit;
-			using Application<Derived>::getUpdateRate;
-			using Application<Derived>::getUpdateRateCount; //获取当前所在帧
-			using andromeda::app::WindowApplication<Derived>::getWindowHeight;
-			using andromeda::app::WindowApplication<Derived>::getWindowWidth;
-			using andromeda::app::WindowApplication<Derived>::isFullScreen;
-			using andromeda::app::WindowApplication<Derived>::setFullScreen;
-			using andromeda::app::WindowApplication<Derived>::setBackColor;
-			using andromeda::app::WindowApplication<Derived>::setWindowMouseEventPassthrough; //preinitialize()中调用。窗口是否鼠标事件穿透
-			using andromeda::app::WindowApplication<Derived>::setWindowFramebufferTransparent;
-			//preinitialize()中调用。设置窗口渲染的背景是否透明。注意即使内容透明，事件依旧不会穿透窗口透明部分，它们会被窗口捕获
+			void initialize()
+			{
+				setIsAlwaysOnTop(true);
+				((Derived*)this)->initialize();
+				setBackColor(andromeda::graphics::ColorRGBA::TRANSPARENT_BLACK);
+				setWindowTransparentColor(andromeda::graphics::Pixel::TRANSPARENT_BLACK);
+			}
 
+			void terminate()
+			{
+				((Derived*)this)->terminate();
+			}
+
+			void update(float tpf)
+			{
+				((Derived*)this)->update(tpf);
+			}
+
+			void render_update(float render_tpf)
+			{
+				((Derived*)this)->render_update(render_tpf);
+			}
+
+			using andromeda::app::WindowApplication<TransparentFullWindowApplication<Derived> >::operator Window*;
+			using andromeda::app::WindowApplication<TransparentFullWindowApplication<Derived> >::setSynchronizeFPS;
+			using andromeda::app::WindowApplication<TransparentFullWindowApplication<Derived> >::getRenderFPS;
+			using andromeda::app::WindowApplication<TransparentFullWindowApplication<Derived> >::getRenderFPSCount; //获取当前所在帧
+			using andromeda::app::WindowApplication<TransparentFullWindowApplication<Derived> >::setRenderFPSLimit;
+			using andromeda::app::WindowApplication<TransparentFullWindowApplication<Derived> >::setUpdateRateLimit;
+
+			using Application<TransparentFullWindowApplication<Derived> >::getUpdateRate;
+			using Application<TransparentFullWindowApplication<Derived> >::getUpdateRateCount; //获取当前所在帧
+
+			using Window::setBackColor;
+			using Window::getBackColor;
+			using Window::getHeight;
+			using Window::getWidth;
+
+			using Window::isWindowFullScreen;
+			using Window::setFullScreen;
+			using Window::setVisible;
+			using Window::setWindowed;
+			using Window::setMonitor;
+			using Window::setWindowSize;
+			using Window::setIsAlwaysOnTop;
+			using Window::setWindowFramebufferTransparent;
+			using Window::isWindowFramebufferTransparent;
+			using Window::setWindowFramebufferResizable;
+
+			using Window::isWindowFramebufferResizable;
+			using Window::setWindowInitiallyVisible;
+			using Window::isWindowInitiallyVisible;
+			using Window::setWindowInitiallyFocused;
+			using Window::isWindowInitiallyFocused;
+			using Window::setWindowDecorated;
+			using Window::isWindowDecorated;
+			using Window::setWindowOpacity;
+#ifdef GLFW_MOUSE_PASSTHROUGH
+			using Window::setWindowMouseEventPassthrough;
+			using Window::isWindowMouseEventPassthrough;
+#endif
+			using Window::setWindowTransparentColor;
 		};
 	}
 }
 
-#endif//ANDROMEDA_APP_TRANSPARENTFULLWINDOWAPPLICATION
+#endif//ANDROMEDA_APP_TRANSPARENTFULLWINDOWAPPLICATION// @formatter:on

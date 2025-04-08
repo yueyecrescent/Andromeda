@@ -27,26 +27,19 @@ def_cls_has_func(render_update)
 #endif//#HAS_FUNC_RENDER_UPDATE#ifndef HAS_FUNC_TERMINATE#define HAS_FUNC_TERMINATEdef_cls_has_func(terminate)#endif//HAS_FUNC_TERMINATE
 
 //所有andromeda::app::Application（包括其本身）必须添加的friend class
-#define DefineApplicationBase(Derived) \
+#define DefineApplication(Derived) \
 	friend class has_func(initialize)<void>;\
 	friend class has_func(preinitialize)<void>;\
 	friend class has_func(terminate)<void>;\
 	friend class has_func(update)<void,float>;\
 	friend class has_func(render_update)<void,float>;\
-	friend class andromeda::app::MainLoopThread<Derived>;
+	friend class andromeda::app::MainLoopThread<Derived>;\
+	friend class andromeda::app::Application<Derived>;
 
-//设置andromeda::app::Application为友元并导入其函数，所有子类都需要有
+//设置andromeda::app::Application为友元并导入其函数，所有直接继承子类都需要有
 #define ImportApplicationAPI(Derived) \
-	friend class andromeda::app::Application<Derived>;\
-	public:\
-		using andromeda::app::Application<Derived>::launch;\
-		using andromeda::app::Application<Derived>::exit;\
-	private:
-
-//用户
-#define DefineApplication(Derived) \
-	DefineApplicationBase(Derived)\
-	ImportApplicationAPI(Derived)
+	using andromeda::app::Application<Derived>::launch;\
+	using andromeda::app::Application<Derived>::exit;
 
 namespace andromeda {
 	extern bool use_opengl;
@@ -60,7 +53,7 @@ namespace andromeda {
 		template<typename Derived>
 		class Application:public andromeda::thread::CoroutineLock
 		{
-			DefineApplicationBase(Application)
+			DefineApplication(Application)
 		protected:
 			bool is_running=false;
 			std::atomic<bool> synchronize_fps; //主线程(如果是窗口程序则是渲染线程)是否与该线程同步
