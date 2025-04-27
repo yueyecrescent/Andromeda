@@ -112,10 +112,15 @@ namespace andromeda {
 				return *this;
 			}
 
-			inline bool setIsAlwaysOnTop(bool floating=false) //设置窗口是否总是置顶
+			inline Window& setIsAlwaysOnTop(bool floating=false) //设置窗口是否总是置顶
 			{
 				glfwSetWindowAttrib(window_id,GLFW_FLOATING,floating);
-				return glfwGetWindowAttrib(window_id,GLFW_FLOATING); //设置成功则返回true
+				return *this;
+			}
+
+			inline bool isAlwaysOnTop()
+			{
+				return glfwGetWindowAttrib(window_id,GLFW_FLOATING);
 			}
 
 			inline void setWindowFramebufferTransparent(bool transparent=false) //设置窗口渲染的背景是否透明。注意即使背景透明，事件依旧不会穿透窗口透明部分，它们会被窗口捕获

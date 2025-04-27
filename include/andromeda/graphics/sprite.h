@@ -27,6 +27,7 @@ namespace andromeda {
 			{
 
 			}
+
 			friend Derived; //防止用户CRTP继承时传错派生类模板参数，且该类的子类不能再派生子类，限制了继承链只有该父类及其直接子类
 
 		public:

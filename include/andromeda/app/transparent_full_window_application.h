@@ -2,6 +2,7 @@
 #define ANDROMEDA_APP_TRANSPARENTFULLWINDOWAPPLICATION
 
 #include "../graphics/color_rgba.h"
+#include "../graphics/internal_shaders.h"
 #include "window_application.h"
 
 // @formatter:off
@@ -24,7 +25,7 @@ namespace andromeda {
 		{
 			DefineApplication(TransparentFullWindowApplication<Derived>)
 		public:
-			TransparentFullWindowApplication(const char* window_title=nullptr,bool isFullScreen=false) :
+			TransparentFullWindowApplication(const char* window_title=nullptr,bool isFullScreen=true) :
 					andromeda::app::WindowApplication<TransparentFullWindowApplication<Derived> >(window_title,andromeda::app::RenderSys::screenWidth,andromeda::app::RenderSys::screenHeight,andromeda::graphics::ColorRGBA::TRANSPARENT_BLACK,isFullScreen)
 			{
 
@@ -34,18 +35,19 @@ namespace andromeda {
 
 			void preinitialize()
 			{
+				((Derived*)this)->preinitialize();
 				setWindowDecorated(false);
 				setWindowFramebufferTransparent(true);
 				setWindowInitiallyFocused(true);
-				((Derived*)this)->preinitialize();
+				setWindowFramebufferResizable(false);
 			}
 
 			void initialize()
 			{
-				setIsAlwaysOnTop(true);
 				((Derived*)this)->initialize();
 				setBackColor(andromeda::graphics::ColorRGBA::TRANSPARENT_BLACK);
 				setWindowTransparentColor(andromeda::graphics::Pixel::TRANSPARENT_BLACK);
+				setIsAlwaysOnTop(true);
 			}
 
 			void terminate()
@@ -61,6 +63,11 @@ namespace andromeda {
 			void render_update(float render_tpf)
 			{
 				((Derived*)this)->render_update(render_tpf);
+			}
+
+			inline static andromeda::graphics::ShaderProgram* ptShader()
+			{
+				return &andromeda::graphics::ptTransparentFixShaderProgram();
 			}
 
 			using andromeda::app::WindowApplication<TransparentFullWindowApplication<Derived> >::operator Window*;

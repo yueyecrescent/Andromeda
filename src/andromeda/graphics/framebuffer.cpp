@@ -97,7 +97,7 @@ void Framebuffer::renderToScreen(float *vertex_arr)
 	glBindFramebuffer(GL_FRAMEBUFFER,0); //绑定到屏幕帧缓冲
 	glDisable(GL_DEPTH_TEST);
 	clearColor();
-	getPTDefaultShaderProgram().use();
+	ptDefaultShaderProgram().use();
 	VertexAttribute& vertex_attribs=VertexAttribute::getDefaultPTVertexAttributes();
 	//绘制到屏幕，绑定顺序是VAO、VBO、EBO，最后调用glVertexAttribPointer()设置顶点属性的格式
 	glBindVertexArray(frame_vao);
